@@ -24,7 +24,7 @@ import { useEffect } from 'react'
  */
 
 // TODO: заменить 0 на номер счётчика Яндекс.Метрики
-const YANDEX_METRIKA_COUNTER_ID = 0
+const YANDEX_METRIKA_COUNTER_ID = 113363175;
 
 /** Функция-очередь Метрики: вызовы копятся в .a, таймстемп создания — в .l */
 type YmFn = ((...args: unknown[]) => void) & { a?: unknown[][]; l?: number }

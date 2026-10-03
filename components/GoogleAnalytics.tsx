@@ -22,7 +22,7 @@ import { useEffect } from 'react'
  */
 
 // TODO: вставить сюда ID потока данных GA4 (формат G-XXXXXXXXXX)
-const GA4_ID = ''
+const GA4_ID = 'G-NWYLN0HVBR'
 
 interface GtagWindow {
   dataLayer?: unknown[]
