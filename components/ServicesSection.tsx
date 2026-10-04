@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import Link from "next/link";
 import { useInView } from "@/lib/useInView";
 
 const packages = [
   {
     num: "01",
     name: "Сайт-визитка",
+    href: "/uslugi/sajt-vizitka",
     price: "530 BYN",
     promo: null,
     once: true,
@@ -23,6 +24,7 @@ const packages = [
   {
     num: "02",
     name: "Сайт под ключ с SEO",
+    href: "/uslugi/razrabotka-saitov",
     price: "от 900 BYN",
     promo: "760 BYN · цена первых 3 клиентов",
     once: true,
@@ -40,6 +42,7 @@ const packages = [
   {
     num: "03",
     name: "Автоматизация заявок",
+    href: "/uslugi/avtomatizaciya-biznesa",
     price: "от 500 BYN",
     promo: null,
     once: true,
@@ -169,16 +172,15 @@ function PackageCard({ pkg, index }: { pkg: Pkg; index: number }) {
         ))}
       </ul>
 
-      <button
+      {/* CTA: ссылка на посадочную услуги — перелинковка для распределения веса;
+          «/uslugi/...#contact» якорит на форму на посадочной */}
+      <Link
+        href={pkg.href}
         className={pkg.featured ? "btn-primary" : "btn-outline"}
-        style={{ marginTop: "auto", width: "100%" }}
-        onClick={() => {
-          const el = document.getElementById("contact");
-          el?.scrollIntoView({ behavior: "smooth" });
-        }}
+        style={{ marginTop: "auto", width: "100%", display: "block", textAlign: "center" }}
       >
         {pkg.cta} →
-      </button>
+      </Link>
     </div>
   );
 }
@@ -189,7 +191,7 @@ export default function ServicesSection() {
       <div style={{ maxWidth: 1200, margin: "0 auto" }}>
         <div style={{ marginBottom: 64 }}>
           <div className="section-label" style={{ marginBottom: 16 }}>
-            // Форматы работы
+            {"// Форматы работы"}
           </div>
           <h2
             style={{

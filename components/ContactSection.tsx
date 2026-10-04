@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useInView } from "@/lib/useInView";
+import { SITE_HOST } from "@/lib/site";
 
 const CONTACTS = [
   { label: "Telegram", value: "@rahunak", href: "https://t.me/rahunak", primary: true },
@@ -139,7 +140,7 @@ function ContactForm() {
   };
 
   const composeText = () =>
-    `Заявка с eugene.zaiko.by\nИмя: ${name}\nКонтакт: ${contact}\n\n${message}`;
+    `Заявка с ${SITE_HOST}\nИмя: ${name}\nКонтакт: ${contact}\n\n${message}`;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -160,7 +161,7 @@ function ContactForm() {
       // Фолбэк: открываем почтовый клиент с готовым текстом — заявка не теряется
       setMailtoHref(
         `mailto:zaiko.eugene@gmail.com?subject=${encodeURIComponent(
-          "Заявка с сайта eugene.zaiko.by"
+          "Заявка с сайта " + SITE_HOST
         )}&body=${encodeURIComponent(text)}`
       );
       setStatus("fallback");

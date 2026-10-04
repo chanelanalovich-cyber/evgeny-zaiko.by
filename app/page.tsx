@@ -6,12 +6,13 @@ import ProjectsSection from "@/components/ProjectsSection";
 import SkillsSection from "@/components/SkillsSection";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
+import { SITE_URL } from "@/lib/site";
 
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "ProfessionalService",
-  name: "Евгений Зайко — разработка сайтов с SEO",
-  url: "https://eugene.zaiko.by",
+  name: "Евгений Зайко - разработка сайтов с SEO",
+  url: SITE_URL,
   description:
     "Разработка сайтов под ключ с SEO-продвижением для малого бизнеса Беларуси. Сайт + топ выдачи + заявки.",
   areaServed: { "@type": "Country", name: "Беларусь" },

@@ -2,9 +2,8 @@ import type { Metadata } from "next";
 import { Inter, JetBrains_Mono, Oswald } from "next/font/google";
 import YandexMetrika from "@/components/YandexMetrika";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
+import { SITE_URL } from "@/lib/site";
 import "./globals.css";
-
-const SITE_URL = "https://eugene.zaiko.by";
 const SITE_NAME = "Евгений Зайко — сайты с клиентами под ключ";
 
 const oswald = Oswald({
@@ -27,11 +26,11 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Сайт под ключ с SEO-продвижением | Евгений Зайко — Беларусь",
+    default: "Разработка сайтов под ключ с SEO — Беларусь | Евгений Зайко",
     template: "%s | Евгений Зайко",
   },
   description:
-    "Разрабатываю сайты для бизнеса и вывожу их в топ Google и Яндекса. Реальные кейсы: +1400% трафика за месяц. Сайт под ключ, SEO-ведение, автоматизация приёма заявок. Беларусь, работаю удалённо.",
+    "Разработка сайтов под ключ с SEO-продвижением: лендинги, сайт-визитки, корпоративные сайты, интернет-магазины. Реальные кейсы: +1415% трафика за месяц. Заявки в Telegram. Беларусь, работаю удалённо.",
   keywords: [
     "разработка сайта под ключ беларусь",
     "создание сайтов минск",

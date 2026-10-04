@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { SITE_HOST } from "@/lib/site";
 
 // Приём заявок с формы и пересылка в Telegram Bot API.
 // Оба env задаются на проде (Vercel → Settings → Environment Variables):
@@ -38,7 +39,7 @@ export async function POST(request: NextRequest) {
     }
 
     const text =
-      `🎯 *Новая заявка с eugene.zaiko.by*\n\n` +
+      `🎯 *Новая заявка с ${SITE_HOST}*\n\n` +
       `*Имя:* ${escapeMd(name)}\n` +
       `*Контакт:* ${escapeMd(contact)}\n\n` +
       `${escapeMd(message)}`;

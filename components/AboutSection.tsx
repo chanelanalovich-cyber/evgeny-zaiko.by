@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useInView } from "@/lib/useInView";
+import { SITE_HOST } from "@/lib/site";
 
 export default function AboutSection() {
   const { ref, visible } = useInView();
@@ -134,7 +135,7 @@ export default function AboutSection() {
                   marginTop: 4,
                 }}
               >
-                eugene.zaiko.by
+                {SITE_HOST}
               </div>
             </div>
           </div>

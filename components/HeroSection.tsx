@@ -94,8 +94,8 @@ export default function HeroSection() {
               maxWidth: 1050,
             }}
           >
-            Сайт, который{" "}
-            <span style={{ color: "var(--accent)" }}>приводит клиентов</span> — под ключ
+            Разработка сайтов{" "}
+            <span style={{ color: "var(--accent)" }}>с клиентами</span> - под ключ
           </h1>
 
           <div

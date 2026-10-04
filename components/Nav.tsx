@@ -1,11 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { scrollToSection } from "@/lib/useInView";
 
-const navLinks: [string, string][] = [
+const navLinks: [string, string, string?][] = [
+  // [label, якорь на главной, href если внешняя страница]
   ["Кейсы", "cases"],
-  ["Пакеты", "services"],
+  ["Услуги", "services", "/uslugi"],
   ["Обо мне", "about"],
   ["Контакты", "contact"],
 ];
@@ -57,20 +59,26 @@ export default function Nav() {
             color: "var(--accent)",
           }}
         >
-          EUGENE.ZAIKO.DEV
+          EVGENY-ZAIKO.BY
         </button>
 
         <div style={{ display: "flex", gap: 28, alignItems: "center" }} className="hidden-mobile">
-          {navLinks.map(([label, id]) => (
-            <button
-              key={id}
-              className="nav-link"
-              style={{ background: "none", border: "none", cursor: "pointer" }}
-              onClick={() => goTo(id)}
-            >
-              {label}
-            </button>
-          ))}
+          {navLinks.map(([label, id, href]) =>
+            href ? (
+              <Link key={id} href={href} className="nav-link" style={{ background: "none", border: "none", cursor: "pointer", textDecoration: "none" }}>
+                {label}
+              </Link>
+            ) : (
+              <button
+                key={id}
+                className="nav-link"
+                style={{ background: "none", border: "none", cursor: "pointer" }}
+                onClick={() => goTo(id)}
+              >
+                {label}
+              </button>
+            )
+          )}
           <button className="btn-primary" style={{ padding: "8px 18px" }} onClick={() => goTo("contact")}>
             Связаться →
           </button>

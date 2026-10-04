@@ -19,7 +19,7 @@ export default function Footer() {
           letterSpacing: "0.1em",
         }}
       >
-        © {new Date().getFullYear()} ЕВГЕНИЙ ЗАЙКО · EUGENE.ZAIKO.BY
+        © {new Date().getFullYear()} ЕВГЕНИЙ ЗАЙКО · EVGENY-ZAIKO.BY
       </div>
       <a
         href="https://t.me/rahunak"

@@ -1,4 +1,5 @@
 import { ImageResponse } from "next/og";
+import { SITE_HOST } from "@/lib/site";
 
 export const alt = "Евгений Зайко — сайты с клиентами под ключ | разработка + SEO";
 export const size = { width: 1200, height: 630 };
@@ -68,7 +69,7 @@ export default function Image() {
             display: "flex",
           }}
         >
-          eugene.zaiko.by
+          {SITE_HOST}
         </div>
       </div>
     ),
