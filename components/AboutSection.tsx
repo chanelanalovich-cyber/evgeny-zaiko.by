@@ -125,7 +125,7 @@ export default function AboutSection() {
                   letterSpacing: "0.1em",
                 }}
               >
-                СВОБОДЕН ДЛЯ 1–2 ПРОЕКТОВ
+                МОГУ ВЗЯТЬ 1–2 ПРОЕКТА
               </div>
               <div
                 style={{
