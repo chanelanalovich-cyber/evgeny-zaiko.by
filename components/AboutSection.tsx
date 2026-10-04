@@ -26,7 +26,7 @@ export default function AboutSection() {
       >
         <div>
           <div className="section-label" style={{ marginBottom: 20 }}>
-            // Кто делает
+            {"// Кто делает"}
           </div>
           <h2
             style={{

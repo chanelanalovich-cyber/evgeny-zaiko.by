@@ -2,12 +2,14 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { scrollToSection } from "@/lib/useInView";
 
 const navLinks: [string, string, string?][] = [
   // [label, якорь на главной, href если внешняя страница]
   ["Кейсы", "cases"],
   ["Услуги", "services", "/uslugi"],
+  ["Блог", "blog", "/blog"],
   ["Обо мне", "about"],
   ["Контакты", "contact"],
 ];
@@ -15,6 +17,7 @@ const navLinks: [string, string, string?][] = [
 export default function Nav() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -25,6 +28,24 @@ export default function Nav() {
   const goTo = (id: string) => {
     scrollToSection(id);
     setMenuOpen(false);
+  };
+
+  // Якорные ссылки — настоящие <a href="/#id"> (краулимые, с внутренним весом).
+  // На главной перехватываем клик для плавного скролла, с других страниц — обычный переход.
+  const anchorClick = (e: React.MouseEvent, id: string) => {
+    if (pathname === "/") {
+      e.preventDefault();
+      goTo(id);
+    } else {
+      setMenuOpen(false);
+    }
+  };
+
+  const linkStyle: React.CSSProperties = {
+    background: "none",
+    border: "none",
+    cursor: "pointer",
+    textDecoration: "none",
   };
 
   return (
@@ -47,12 +68,10 @@ export default function Nav() {
           transition: "all 0.4s ease",
         }}
       >
-        <button
-          onClick={() => goTo("hero")}
+        <Link
+          href="/"
           style={{
-            background: "none",
-            border: "none",
-            cursor: "pointer",
+            ...linkStyle,
             fontFamily: "var(--font-mono)",
             fontSize: "0.78rem",
             letterSpacing: "0.15em",
@@ -60,28 +79,29 @@ export default function Nav() {
           }}
         >
           EVGENY-ZAIKO.BY
-        </button>
+        </Link>
 
         <div style={{ display: "flex", gap: 28, alignItems: "center" }} className="hidden-mobile">
           {navLinks.map(([label, id, href]) =>
             href ? (
-              <Link key={id} href={href} className="nav-link" style={{ background: "none", border: "none", cursor: "pointer", textDecoration: "none" }}>
+              <Link key={id} href={href} className="nav-link" style={linkStyle}>
                 {label}
               </Link>
             ) : (
-              <button
+              <Link
                 key={id}
+                href={`/#${id}`}
                 className="nav-link"
-                style={{ background: "none", border: "none", cursor: "pointer" }}
-                onClick={() => goTo(id)}
+                style={linkStyle}
+                onClick={(e) => anchorClick(e, id)}
               >
                 {label}
-              </button>
+              </Link>
             )
           )}
-          <button className="btn-primary" style={{ padding: "8px 18px" }} onClick={() => goTo("contact")}>
+          <Link href="/#contact" className="btn-primary" style={{ padding: "8px 18px" }} onClick={(e) => anchorClick(e, "contact")}>
             Связаться →
-          </button>
+          </Link>
         </div>
 
         <button
@@ -144,10 +164,11 @@ export default function Nav() {
             gap: 32,
           }}
         >
-          {navLinks.map(([label, id]) => (
-            <button
+          {navLinks.map(([label, id, href]) => (
+            <Link
               key={id}
-              onClick={() => goTo(id)}
+              href={href ?? `/#${id}`}
+              onClick={href ? () => setMenuOpen(false) : (e) => anchorClick(e, id)}
               style={{
                 background: "none",
                 border: "none",
@@ -158,10 +179,11 @@ export default function Nav() {
                 textTransform: "uppercase",
                 color: "var(--text)",
                 letterSpacing: "0.02em",
+                textDecoration: "none",
               }}
             >
               {label}
-            </button>
+            </Link>
           ))}
         </div>
       )}

@@ -43,6 +43,7 @@ export default function GoogleAnalytics({ enabled }: { enabled: boolean }) {
     // page_view не отправляется, Realtime пустой).
     w.dataLayer = w.dataLayer || []
     w.gtag = function () {
+      // eslint-disable-next-line prefer-rest-params -- gtag.js распознаёт в очереди только Arguments-объекты, rest-массив молча игнорируется
       w.dataLayer!.push(arguments)
     }
     w.gtag('js', new Date())

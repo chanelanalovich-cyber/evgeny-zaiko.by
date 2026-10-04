@@ -171,6 +171,138 @@ export default async function ServicePage({ params }: Props) {
           </p>
         </section>
 
+        {/* Кому подходит */}
+        <section style={{ padding: "0 32px 96px" }}>
+          <div style={{ maxWidth: 1200, margin: "0 auto" }}>
+            <h2
+              style={{
+                fontFamily: "var(--font-display)",
+                fontWeight: 700,
+                fontSize: "clamp(1.6rem,3vw,2.6rem)",
+                textTransform: "uppercase",
+                color: "var(--text)",
+                margin: 0,
+                marginBottom: 40,
+              }}
+            >
+              Кому <span style={{ color: "var(--accent)" }}>подходит</span>
+            </h2>
+            <div style={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
+              {service.forWhom.map((item, i) => (
+                <div
+                  key={item.title}
+                  style={{
+                    flex: "1 1 260px",
+                    minWidth: 260,
+                    border: "1px solid var(--border)",
+                    background: "var(--bg)",
+                    padding: "32px 28px",
+                  }}
+                >
+                  <div
+                    style={{
+                      fontFamily: "var(--font-mono)",
+                      fontSize: "0.62rem",
+                      color: "var(--accent)",
+                      letterSpacing: "0.14em",
+                      marginBottom: 14,
+                    }}
+                  >
+                    {String(i + 1).padStart(2, "0")}
+                  </div>
+                  <h3
+                    style={{
+                      fontFamily: "var(--font-display)",
+                      fontWeight: 600,
+                      fontSize: "1.05rem",
+                      color: "var(--text)",
+                      margin: 0,
+                      marginBottom: 10,
+                    }}
+                  >
+                    {item.title}
+                  </h3>
+                  <p
+                    style={{
+                      fontFamily: "var(--font-body)",
+                      fontSize: "0.85rem",
+                      lineHeight: 1.65,
+                      color: "var(--muted)",
+                      margin: 0,
+                    }}
+                  >
+                    {item.text}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Об услуге — текстовый блок */}
+        <section style={{ padding: "0 32px 96px" }}>
+          <div style={{ maxWidth: 820, margin: "0 auto" }}>
+            <h2
+              style={{
+                fontFamily: "var(--font-display)",
+                fontWeight: 700,
+                fontSize: "clamp(1.6rem,3vw,2.6rem)",
+                textTransform: "uppercase",
+                color: "var(--text)",
+                margin: 0,
+                marginBottom: 32,
+              }}
+            >
+              Об <span style={{ color: "var(--accent)" }}>услуге</span>
+            </h2>
+            {service.about.map((text, i) => (
+              <p
+                key={i}
+                style={{
+                  fontFamily: "var(--font-body)",
+                  fontSize: "1rem",
+                  lineHeight: 1.8,
+                  color: "var(--muted)",
+                  margin: "0 0 20px",
+                }}
+              >
+                {text}
+              </p>
+            ))}
+          </div>
+        </section>
+
+        {/* Почему я */}
+        <section style={{ padding: "0 32px 96px" }}>
+          <div style={{ maxWidth: 1200, margin: "0 auto" }}>
+            <h2
+              style={{
+                fontFamily: "var(--font-display)",
+                fontWeight: 700,
+                fontSize: "clamp(1.6rem,3vw,2.6rem)",
+                textTransform: "uppercase",
+                color: "var(--text)",
+                margin: 0,
+                marginBottom: 32,
+              }}
+            >
+              Почему <span style={{ color: "var(--accent)" }}>заказывают у меня</span>
+            </h2>
+            <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: 16, maxWidth: 820 }}>
+              {service.whyMe.map((item, i) => (
+                <li key={i} style={{ display: "flex", gap: 14 }}>
+                  <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.8rem", color: "var(--accent)", paddingTop: 3, flexShrink: 0 }}>
+                    ✓
+                  </span>
+                  <span style={{ fontFamily: "var(--font-body)", fontSize: "0.95rem", lineHeight: 1.7, color: "var(--muted)", paddingTop: 2 }}>
+                    {item}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+
         {/* Что входит */}
         <section style={{ padding: "0 32px 96px" }}>
           <div style={{ maxWidth: 1200, margin: "0 auto" }}>

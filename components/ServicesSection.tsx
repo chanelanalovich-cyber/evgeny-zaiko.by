@@ -212,6 +212,55 @@ export default function ServicesSection() {
             <PackageCard key={i} pkg={p} index={i} />
           ))}
         </div>
+
+        {/* Перелинковка: главная → все 5 посадочных (в пакетах 3, тут — остальные 2) */}
+        <div
+          style={{
+            display: "flex",
+            gap: 28,
+            flexWrap: "wrap",
+            alignItems: "center",
+            marginTop: 28,
+            paddingTop: 24,
+            borderTop: "1px solid var(--border)",
+          }}
+        >
+          <span
+            style={{
+              fontFamily: "var(--font-mono)",
+              fontSize: "0.66rem",
+              color: "var(--muted)",
+              letterSpacing: "0.14em",
+              textTransform: "uppercase",
+            }}
+          >
+            {"// Также делаю"}
+          </span>
+          <Link
+            href="/uslugi/landing-page"
+            style={{
+              fontFamily: "var(--font-mono)",
+              fontSize: "0.74rem",
+              color: "var(--accent)",
+              textDecoration: "none",
+              letterSpacing: "0.08em",
+            }}
+          >
+            Продающие лендинги →
+          </Link>
+          <Link
+            href="/uslugi/seo-prodvizhenie"
+            style={{
+              fontFamily: "var(--font-mono)",
+              fontSize: "0.74rem",
+              color: "var(--accent)",
+              textDecoration: "none",
+              letterSpacing: "0.08em",
+            }}
+          >
+            SEO-продвижение сайтов →
+          </Link>
+        </div>
       </div>
     </section>
   );

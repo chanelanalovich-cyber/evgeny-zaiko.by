@@ -31,7 +31,7 @@ export default function ContactSection() {
         >
           <div>
             <div className="section-label" style={{ marginBottom: 20 }}>
-              // Начнём с разговора
+              {"// Начнём с разговора"}
             </div>
             <h2
               style={{
@@ -234,7 +234,7 @@ function ContactForm() {
   return (
     <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 16 }}>
       <div className="section-label" style={{ marginBottom: 8 }}>
-        // Бриф за 1 минуту
+        {"// Бриф за 1 минуту"}
       </div>
       <input
         required

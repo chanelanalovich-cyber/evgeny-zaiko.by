@@ -64,7 +64,7 @@ export default function SkillsSection() {
         >
           <div>
             <div className="section-label" style={{ marginBottom: 20 }}>
-              // Стек
+              {"// Стек"}
             </div>
             <h2
               style={{
@@ -88,7 +88,7 @@ export default function SkillsSection() {
 
           <div>
             <div className="section-label" style={{ marginBottom: 20 }}>
-              // Подход
+              {"// Подход"}
             </div>
             <h2
               style={{
