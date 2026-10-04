@@ -144,6 +144,58 @@ body {
     0 0 0 1px rgba(200, 255, 0, 0.2);
 }
 
+/* Cases section: mock photo | content | number+domain */
+.case-card {
+  display: grid;
+  grid-template-columns: 280px 1fr 170px;
+  cursor: pointer;
+}
+.case-media {
+  border-right: 1px solid var(--border);
+}
+.case-content {
+  padding: 30px 34px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 16px;
+  min-width: 0;
+}
+.case-side {
+  padding: 32px 28px;
+  border-left: 1px solid var(--border);
+}
+.case-num {
+  font-family: var(--font-mono);
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.08);
+}
+@media (max-width: 960px) {
+  .case-card {
+    grid-template-columns: 1fr;
+  }
+  .case-media {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+  .case-content {
+    padding: 24px 22px;
+  }
+  .case-side {
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between;
+    padding: 16px 22px;
+    border-left: none;
+    border-top: 1px solid var(--border);
+  }
+  .case-num {
+    font-size: 1.3rem;
+  }
+}
+
 /* Tag */
 .tag {
   font-family: var(--font-mono), monospace;
