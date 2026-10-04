@@ -49,9 +49,8 @@ export const metadata: Metadata = {
     canonical: SITE_URL,
   },
   verification: {
-    // Вставить коды после добавления ресурсов в GSC и Яндекс.Вебмастер
-    google: "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-    yandex: "XXXXXXXXXXXXXXXXXXXX",
+    google: "QLy0JClFzAhEnJUv2yUkP95bN0TUzdtDE784k9UN2pQ",
+    yandex: "89763e265512c83d",
   },
   openGraph: {
     type: "website",
