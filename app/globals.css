@@ -68,6 +68,21 @@ body {
   animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
+/* LCP-оптимизация: H1 в hero анимируется БЕЗ фазы прозрачности —
+   элемент с opacity:0 не может стать LCP, и заголовок красится только после delay.
+   Сдвиг оставляем (он не блокирует первую отрисовку контента). */
+@keyframes fadeUpVisible {
+  from {
+    transform: translateY(32px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+#hero h1.fade-up {
+  animation-name: fadeUpVisible;
+}
+
 /* Slide in left */
 @keyframes slideLeft {
   from {

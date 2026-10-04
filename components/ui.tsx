@@ -25,9 +25,20 @@ export function Counter({ target, suffix = "" }: { target: number; suffix?: stri
   }, [visible, target]);
 
   return (
-    <span ref={ref as React.RefObject<HTMLSpanElement>} style={{ display: "inline-block" }}>
-      {val}
-      {suffix}
+    <span
+      ref={ref as React.RefObject<HTMLSpanElement>}
+      style={{ display: "inline-block", position: "relative" }}
+    >
+      {/* Невидимый спан финального значения резервирует ширину — счётчик
+          не сдвигает layout при наборе цифр (иначе CLS от каждого тика). */}
+      <span style={{ visibility: "hidden" }} aria-hidden="true">
+        {target}
+        {suffix}
+      </span>
+      <span style={{ position: "absolute", inset: 0 }} aria-hidden="false">
+        {val}
+        {suffix}
+      </span>
     </span>
   );
 }
