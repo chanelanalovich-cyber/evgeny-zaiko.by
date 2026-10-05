@@ -32,6 +32,21 @@ const jsonLd = {
   })),
 };
 
+/** Форматы для блока «Визитка или лендинг — что выбрать?» (кластеры C и B ядра).
+ *  Цены и названия — из services, единый источник коммерческих данных. */
+const comparisonSlugs = ["sajt-vizitka", "landing-page"] as const;
+
+const comparisonNotes: Record<string, { task: string; when: string }> = {
+  "sajt-vizitka": {
+    task: "Представляет бизнес целиком: услуги, цены, работы, отзывы, онлайн-запись. Клиент находит вас в поиске и сразу понимает, кто вы, сколько это стоит и как связаться.",
+    when: "Выбирайте, если нужно представительство под весь бизнес: мастерам, салонам, небольшим компаниям.",
+  },
+  "landing-page": {
+    task: "Заточен под одну услугу и активный сбор заявок: оффер → доказательства → заявка в один клик. Часто работает как страница под рекламный трафик.",
+    when: "Выбирайте, если нужно продать конкретную услугу: запуск продукта, акция, проверка спроса, трафик с рекламы.",
+  },
+};
+
 export default function ServicesIndexPage() {
   return (
     <div className="noise" style={{ background: "var(--bg)", minHeight: "100vh" }}>
@@ -186,6 +201,135 @@ export default function ServicesIndexPage() {
                 </div>
               </Link>
             ))}
+          </div>
+        </section>
+
+        {/* «Визитка или лендинг» — частый вопрос клиентов до заявки: сравнение форматов
+            закрывает возражение и перелинковывает кластеры B и C ядра. */}
+        <section style={{ padding: "0 32px 120px" }}>
+          <div style={{ maxWidth: 1200, margin: "0 auto" }}>
+            <div style={{ marginBottom: 28 }}>
+              <div className="section-label" style={{ marginBottom: 14 }}>
+                {"// Визитка или лендинг — что выбрать?"}
+              </div>
+              <p
+                style={{
+                  fontFamily: "var(--font-body)",
+                  fontSize: "0.9rem",
+                  lineHeight: 1.7,
+                  color: "var(--muted)",
+                  maxWidth: 720,
+                  margin: 0,
+                }}
+              >
+                Обе страницы обычно одностраничные, но задачи у них разные. Короткое правило:
+                визитка отвечает на вопрос «кто вы», лендинг — «почему купить именно сейчас».
+              </p>
+            </div>
+
+            <div style={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
+              {comparisonSlugs.map((slug) => {
+                const s = services.find((x) => x.slug === slug);
+                const note = s ? comparisonNotes[s.slug] : undefined;
+                if (!s || !note) return null;
+                return (
+                  <Link
+                    key={s.slug}
+                    href={`/uslugi/${s.slug}`}
+                    className="project-card"
+                    style={{
+                      flex: 1,
+                      minWidth: 320,
+                      border: "1px solid var(--border)",
+                      background: "var(--bg)",
+                      padding: "32px 28px",
+                      textDecoration: "none",
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: 14,
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "baseline",
+                        gap: 12,
+                        flexWrap: "wrap",
+                      }}
+                    >
+                      <h3
+                        style={{
+                          fontFamily: "var(--font-display)",
+                          fontWeight: 700,
+                          fontSize: "1.2rem",
+                          textTransform: "uppercase",
+                          color: "var(--text)",
+                          margin: 0,
+                        }}
+                      >
+                        {s.name}
+                      </h3>
+                      <span
+                        style={{
+                          fontFamily: "var(--font-mono)",
+                          fontSize: "0.7rem",
+                          color: "var(--accent)",
+                          whiteSpace: "nowrap",
+                        }}
+                      >
+                        {s.priceLabel}
+                      </span>
+                    </div>
+                    <p
+                      style={{
+                        fontFamily: "var(--font-body)",
+                        fontSize: "0.86rem",
+                        lineHeight: 1.65,
+                        color: "var(--muted)",
+                        margin: 0,
+                      }}
+                    >
+                      {note.task}
+                    </p>
+                    <div
+                      style={{
+                        fontFamily: "var(--font-mono)",
+                        fontSize: "0.66rem",
+                        lineHeight: 1.6,
+                        color: "var(--text)",
+                        marginTop: "auto",
+                      }}
+                    >
+                      ↳ {note.when}
+                    </div>
+                    <span
+                      style={{
+                        fontFamily: "var(--font-mono)",
+                        fontSize: "0.72rem",
+                        color: "var(--accent)",
+                      }}
+                    >
+                      Подробнее →
+                    </span>
+                  </Link>
+                );
+              })}
+            </div>
+
+            <p
+              style={{
+                fontFamily: "var(--font-body)",
+                fontSize: "0.84rem",
+                lineHeight: 1.7,
+                color: "var(--muted)",
+                maxWidth: 720,
+                margin: "24px 0 0",
+              }}
+            >
+              Сомневаетесь — опишите бизнес в двух словах: после короткого брифа скажу, какой
+              формат приведёт заявки, а не просто будет «красиво».
+            </p>
           </div>
         </section>
       </main>
