@@ -7,6 +7,52 @@ import ContactSection from "@/components/ContactSection";
 import { SITE_URL } from "@/lib/site";
 import { posts, getPost, type Block } from "@/lib/blog";
 
+/** Фразы в тексте блога, которые ведут на услуги и связанные статьи */
+const BODY_LINKS: { phrase: string; href: string }[] = [
+  { phrase: "переборка на статическом генераторе", href: "/uslugi/razrabotka-saitov" },
+  { phrase: "подробнее в статье про перенос на другой хостинг", href: "/blog/perenos-sajta-na-drugoj-hosting" },
+  { phrase: "входит в поддержку сайта", href: "/uslugi/podderzhka-sajta" },
+  { phrase: "типовой блок корпоративного сайта", href: "/uslugi/korporativnyj-sajt" },
+  { phrase: "разработки сайта под ключ", href: "/uslugi/razrabotka-saitov" },
+  { phrase: "корпоративном сайте на CMS", href: "/uslugi/korporativnyj-sajt" },
+  { phrase: "аудит сайта с планом правок занимает неделю", href: "/uslugi/seo-prodvizhenie" },
+];
+
+/** Рендер текста блога: фразы из BODY_LINKS превращает в ссылки */
+function RichText({ text }: { text: string }) {
+  const parts: { text: string; href?: string }[] = [];
+  let rest = text;
+  while (rest.length > 0) {
+    let best: { index: number; phrase: string; href: string } | null = null;
+    for (const link of BODY_LINKS) {
+      const index = rest.indexOf(link.phrase);
+      if (index !== -1 && (best === null || index < best.index)) {
+        best = { index, phrase: link.phrase, href: link.href };
+      }
+    }
+    if (best === null) {
+      parts.push({ text: rest });
+      break;
+    }
+    if (best.index > 0) parts.push({ text: rest.slice(0, best.index) });
+    parts.push({ text: best.phrase, href: best.href });
+    rest = rest.slice(best.index + best.phrase.length);
+  }
+  return (
+    <>
+      {parts.map((part, i) =>
+        part.href ? (
+          <Link key={i} href={part.href} style={{ color: "var(--accent)", textDecoration: "underline" }}>
+            {part.text}
+          </Link>
+        ) : (
+          <span key={i}>{part.text}</span>
+        ),
+      )}
+    </>
+  );
+}
+
 interface Props {
   params: Promise<{ slug: string }>;
 }
@@ -56,7 +102,7 @@ function BlockRenderer({ block }: { block: Block }) {
     case "p":
       return (
         <p style={{ fontFamily: "var(--font-body)", fontSize: "1rem", lineHeight: 1.8, color: "var(--muted)", margin: "0 0 18px" }}>
-          {block.text}
+          <RichText text={block.text} />
         </p>
       );
     case "list":
@@ -68,7 +114,7 @@ function BlockRenderer({ block }: { block: Block }) {
                 {String(i + 1).padStart(2, "0")}
               </span>
               <span style={{ fontFamily: "var(--font-body)", fontSize: "0.95rem", lineHeight: 1.7, color: "var(--muted)" }}>
-                {item}
+                <RichText text={item} />
               </span>
             </li>
           ))}
@@ -85,7 +131,7 @@ function BlockRenderer({ block }: { block: Block }) {
           }}
         >
           <p style={{ fontFamily: "var(--font-body)", fontSize: "0.92rem", lineHeight: 1.7, color: "var(--text)", margin: 0 }}>
-            {block.text}
+            <RichText text={block.text} />
           </p>
         </aside>
       );

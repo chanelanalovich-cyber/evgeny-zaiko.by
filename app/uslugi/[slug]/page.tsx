@@ -7,6 +7,51 @@ import ContactSection from "@/components/ContactSection";
 import { SITE_URL } from "@/lib/site";
 import { services, getService, relatedServices } from "@/lib/services";
 
+/** Фразы в ответах FAQ, которые ведут на страницы других услуг (перелинковка кластеров) */
+const FAQ_LINKS: { phrase: string; slug: string }[] = [
+  { phrase: "«Корпоративный сайт под ключ»", slug: "korporativnyj-sajt" },
+  { phrase: "кастомную разработку под ключ (от 900 BYN)", slug: "razrabotka-saitov" },
+];
+
+/** Рендер ответа FAQ: фразы из FAQ_LINKS превращает в ссылки на связанные услуги */
+function FaqAnswer({ text }: { text: string }) {
+  const parts: { text: string; slug?: string }[] = [];
+  let rest = text;
+  while (rest.length > 0) {
+    let best: { index: number; phrase: string; slug: string } | null = null;
+    for (const link of FAQ_LINKS) {
+      const index = rest.indexOf(link.phrase);
+      if (index !== -1 && (best === null || index < best.index)) {
+        best = { index, phrase: link.phrase, slug: link.slug };
+      }
+    }
+    if (best === null) {
+      parts.push({ text: rest });
+      break;
+    }
+    if (best.index > 0) parts.push({ text: rest.slice(0, best.index) });
+    parts.push({ text: best.phrase, slug: best.slug });
+    rest = rest.slice(best.index + best.phrase.length);
+  }
+  return (
+    <>
+      {parts.map((part, i) =>
+        part.slug ? (
+          <Link
+            key={i}
+            href={`/uslugi/${part.slug}`}
+            style={{ color: "var(--accent)", textDecoration: "underline" }}
+          >
+            {part.text}
+          </Link>
+        ) : (
+          <span key={i}>{part.text}</span>
+        ),
+      )}
+    </>
+  );
+}
+
 interface Props {
   params: Promise<{ slug: string }>;
 }
@@ -59,12 +104,12 @@ export default async function ServicePage({ params }: Props) {
       areaServed: { "@type": "Country", name: "Беларусь" },
       offers: {
         "@type": "Offer",
-        priceCurrency: "BYN",
+        priceCurrency: service.priceCurrency ?? "BYN",
         price: service.priceFrom,
         priceSpecification: {
           "@type": "PriceSpecification",
           price: service.priceFrom,
-          priceCurrency: "BYN",
+          priceCurrency: service.priceCurrency ?? "BYN",
           valueAddedTaxIncluded: true,
         },
         availability: "https://schema.org/InStock",
@@ -141,7 +186,7 @@ export default async function ServicePage({ params }: Props) {
           </nav>
 
           <div className="section-label" style={{ marginBottom: 16 }}>
-            {"// " + service.priceLabel + " · Беларусь · под ключ"}
+            {"// " + service.priceLabel + " · Беларусь · " + (service.heroNote ?? "под ключ")}
           </div>
           <h1
             style={{
@@ -559,7 +604,7 @@ export default async function ServicePage({ params }: Props) {
                       marginBottom: 0,
                     }}
                   >
-                    {f.answer}
+                    <FaqAnswer text={f.answer} />
                   </p>
                 </details>
               ))}

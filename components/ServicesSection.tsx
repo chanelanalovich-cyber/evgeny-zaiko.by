@@ -211,9 +211,7 @@ export default function ServicesSection() {
           {packages.map((p, i) => (
             <PackageCard key={i} pkg={p} index={i} />
           ))}
-        </div>
-
-        {/* Перелинковка: главная → все 5 посадочных (в пакетах 3, тут — остальные 2) */}
+        </div>          {/* Перелинковка: главная → все 7 посадочных (в пакетах 3, тут — остальные 4) */}
         <div
           style={{
             display: "flex",
@@ -259,6 +257,30 @@ export default function ServicesSection() {
             }}
           >
             SEO-продвижение сайтов →
+          </Link>
+          <Link
+            href="/uslugi/korporativnyj-sajt"
+            style={{
+              fontFamily: "var(--font-mono)",
+              fontSize: "0.74rem",
+              color: "var(--accent)",
+              textDecoration: "none",
+              letterSpacing: "0.08em",
+            }}
+          >
+            Корпоративный сайт под ключ →
+          </Link>
+          <Link
+            href="/uslugi/podderzhka-sajta"
+            style={{
+              fontFamily: "var(--font-mono)",
+              fontSize: "0.74rem",
+              color: "var(--accent)",
+              textDecoration: "none",
+              letterSpacing: "0.08em",
+            }}
+          >
+            Поддержка и доработка сайтов →
           </Link>
         </div>
       </div>
