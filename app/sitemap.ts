@@ -7,7 +7,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // Фиксированная дата последнего изменения контента — осознанно, не new Date():
   // «всегда сегодня» в lastmod обесценивает сигнал для поисковых систем.
   // Обновлять при реальных изменениях страниц.
-  const lastmod = new Date("2026-10-04");
+  const lastmod = new Date("2026-10-05");
 
   return [
     {

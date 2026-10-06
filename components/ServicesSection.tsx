@@ -213,7 +213,7 @@ export default function ServicesSection() {
           ))}
         </div>
 
-        {/* Перелинковка: главная → все 5 посадочных (в пакетах 3, тут — остальные 2) */}
+        {/* Перелинковка: главная → все 6 посадочных (в пакетах 3, тут — остальные 3) */}
         <div
           style={{
             display: "flex",
@@ -259,6 +259,18 @@ export default function ServicesSection() {
             }}
           >
             SEO-продвижение сайтов →
+          </Link>
+          <Link
+            href="/uslugi/instagram-threads-avtomatizaciya"
+            style={{
+              fontFamily: "var(--font-mono)",
+              fontSize: "0.74rem",
+              color: "var(--accent)",
+              textDecoration: "none",
+              letterSpacing: "0.08em",
+            }}
+          >
+            Чат-боты для Instagram →
           </Link>
         </div>
       </div>
