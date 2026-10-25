@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, JetBrains_Mono, Oswald } from "next/font/google";
 import YandexMetrika from "@/components/YandexMetrika";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
+import PhoneClickTracker from "@/components/PhoneClickTracker";
 import { SITE_URL } from "@/lib/site";
 import "./globals.css";
 const SITE_NAME = "Евгений Зайко — сайты с клиентами под ключ";
@@ -101,6 +102,9 @@ export default function RootLayout({
 
         {/* GA4 — отложенная загрузка. ID вписать в components/GoogleAnalytics.tsx */}
         {isProduction && <GoogleAnalytics enabled={isProduction} />}
+
+        {/* Глобальный трекер кликов по телефонным ссылкам → GA4 tel_click */}
+        {isProduction && <PhoneClickTracker />}
       </body>
     </html>
   );

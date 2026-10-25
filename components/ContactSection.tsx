@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useInView } from "@/lib/useInView";
+import { trackEvent } from "@/lib/analytics";
 import { SITE_HOST } from "@/lib/site";
 
 const CONTACTS = [
@@ -154,6 +155,8 @@ function ContactForm() {
       });
       if (res.ok) {
         setStatus("sent");
+        // GA4 — успешная отправка лид-формы
+        trackEvent("generate_lead", { form: "contact" });
         return;
       }
       throw new Error(`HTTP ${res.status}`);
