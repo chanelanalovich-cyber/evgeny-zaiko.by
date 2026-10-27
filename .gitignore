@@ -26,6 +26,10 @@ yarn-error.log*
 # vercel
 .vercel
 
+# локальные симлинки агентов (с абсолютными путями хоста — ломают build на Vercel)
+.mcp.json
+.claude/skills/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
