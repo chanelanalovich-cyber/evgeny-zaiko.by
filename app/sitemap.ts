@@ -8,6 +8,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // «всегда сегодня» в lastmod обесценивает сигнал для поисковых систем.
   // Обновлять при реальных изменениях страниц.
   const lastmod = new Date("2026-10-04");
+  // Страница USCA — новая контентная работа, собственная дата lastmod
+  const uscaLastmod = new Date("2026-10-27");
 
   return [
     {
@@ -24,9 +26,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     ...services.map((s) => ({
       url: `${SITE_URL}/uslugi/${s.slug}`,
-      lastModified: lastmod,
+      lastModified: s.cluster === "USCA" ? uscaLastmod : lastmod,
       changeFrequency: "monthly" as const,
-      priority: 0.8,
+      priority: s.cluster === "USCA" ? 0.85 : 0.8,
     })),
     // Страницы доверия/навигации (Фаза 3: C2/C4/C5/C6)
     {

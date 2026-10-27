@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { useInView } from "@/lib/useInView";
 import { projects, type Project } from "@/lib/projects";
 
@@ -218,6 +219,61 @@ function MockPhoto({ p }: { p: Project }) {
   );
 }
 
+/* ---------- Настоящий скриншот сайта в рамке браузера (Desktop-снятие headless Chrome) ---------- */
+
+function BrowserDots() {
+  return (
+    <>
+      <span style={{ width: 9, height: 9, borderRadius: "50%", background: "#ff5f57", display: "inline-block", flexShrink: 0 }} />
+      <span style={{ width: 9, height: 9, borderRadius: "50%", background: "#febc2e", display: "inline-block", flexShrink: 0 }} />
+      <span style={{ width: 9, height: 9, borderRadius: "50%", background: "#28c840", display: "inline-block", flexShrink: 0 }} />
+    </>
+  );
+}
+
+function RealShot({ p, shot }: { p: Project; shot: string }) {
+  return (
+    <div style={{ display: "flex", flexDirection: "column" }}>
+      <div
+        style={{
+          background: "#0d0d0d",
+          display: "flex",
+          alignItems: "center",
+          gap: 6,
+          padding: "8px 12px",
+        }}
+      >
+        <BrowserDots />
+        <span
+          style={{
+            margin: "0 12px",
+            flex: 1,
+            textAlign: "center",
+            overflow: "hidden",
+            whiteSpace: "nowrap",
+            fontFamily: "var(--font-mono)",
+            fontSize: "0.6rem",
+            color: "rgba(255,255,255,0.5)",
+            background: "rgba(255,255,255,0.07)",
+            borderRadius: 7,
+            padding: "3px 10px",
+          }}
+        >
+          {p.domain}
+        </span>
+      </div>
+      <Image
+        src={shot}
+        alt={`Скриншот сайта ${p.domain}`}
+        width={1024}
+        height={768}
+        loading="lazy"
+        style={{ display: "block", width: "100%", height: "auto" }}
+      />
+    </div>
+  );
+}
+
 /* ---------- Карточка кейса ---------- */
 
 function ProjectCard({ project: p, index }: { project: Project; index: number }) {
@@ -240,8 +296,7 @@ function ProjectCard({ project: p, index }: { project: Project; index: number })
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       onClick={() => window.open(p.link, "_blank")}
-    >
-      {/* Мок-скриншот + метрика-результат */}
+    >        {/* Скриншот сайта + метрика-результат */}
       <div
         className="case-media"
         style={{
@@ -250,7 +305,11 @@ function ProjectCard({ project: p, index }: { project: Project; index: number })
           flexDirection: "column",
         }}
       >
-        <MockPhoto p={p} />
+        {p.screenshot ? (
+          <RealShot p={p} shot={p.screenshot} />
+        ) : (
+          <MockPhoto p={p} />
+        )}
         <div
           style={{
             padding: "18px 22px 22px",

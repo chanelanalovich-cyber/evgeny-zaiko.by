@@ -179,6 +179,18 @@ export default function BlogIndexPage() {
               </Link>
             ))}
           </div>
+
+          <div style={{ marginTop: 48, display: "flex", flexWrap: "wrap", alignItems: "center", gap: 18 }}>
+            <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.62rem", color: "var(--muted)", letterSpacing: "0.12em", textTransform: "uppercase" }}>
+              {"// Работаю и удалённо"}
+            </span>
+            <Link
+              href="/uslugi/russkoyazychnym-biznesu-v-ssha-i-kanade"
+              style={{ fontFamily: "var(--font-mono)", fontSize: "0.74rem", color: "var(--accent)", textDecoration: "none" }}
+            >
+              Сайты для русскоязычного бизнеса в США и Канаде →
+            </Link>
+          </div>
         </section>
       </main>
       <Footer />

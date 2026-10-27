@@ -137,6 +137,9 @@ export default function CasesPage() {
             <Link href="/contacts" style={{ fontFamily: "var(--font-mono)", fontSize: "0.74rem", color: "var(--muted)", textDecoration: "none" }}>
               Обсудить свой проект →
             </Link>
+            <Link href="/uslugi/russkoyazychnym-biznesu-v-ssha-i-kanade" style={{ fontFamily: "var(--font-mono)", fontSize: "0.74rem", color: "var(--accent)", textDecoration: "none" }}>
+              Русскоязычному бизнесу в США и Канаде →
+            </Link>
           </div>
         </div>
       </main>

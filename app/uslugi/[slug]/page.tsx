@@ -91,7 +91,7 @@ export default async function ServicePage({ params }: Props) {
   const jsonLd = [
     {
       "@context": "https://schema.org",
-      "@type": "Service",
+      "@type": service.schemaType ?? "Service",
       name: service.title,
       serviceType: service.name,
       url: pageUrl,
@@ -101,7 +101,7 @@ export default async function ServicePage({ params }: Props) {
         name: "Евгений Зайко",
         url: SITE_URL,
       },
-      areaServed: { "@type": "Country", name: "Беларусь" },
+      areaServed: service.areaServed ?? [{ "@type": "Country", name: "Беларусь" }],
       offers: {
         "@type": "Offer",
         priceCurrency: service.priceCurrency ?? "BYN",
@@ -186,7 +186,7 @@ export default async function ServicePage({ params }: Props) {
           </nav>
 
           <div className="section-label" style={{ marginBottom: 16 }}>
-            {"// " + service.priceLabel + " · Беларусь · " + (service.heroNote ?? "под ключ")}
+            {"// " + service.priceLabel + " · " + (service.heroGeo ?? "Беларусь") + " · " + (service.heroNote ?? "под ключ")}
           </div>
           <h1
             style={{

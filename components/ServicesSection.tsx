@@ -282,6 +282,18 @@ export default function ServicesSection() {
           >
             Поддержка и доработка сайтов →
           </Link>
+          <Link
+            href="/uslugi/russkoyazychnym-biznesu-v-ssha-i-kanade"
+            style={{
+              fontFamily: "var(--font-mono)",
+              fontSize: "0.74rem",
+              color: "var(--accent)",
+              textDecoration: "none",
+              letterSpacing: "0.08em",
+            }}
+          >
+            Русскоязычному бизнесу в США и Канаде →
+          </Link>
         </div>
       </div>
     </section>
