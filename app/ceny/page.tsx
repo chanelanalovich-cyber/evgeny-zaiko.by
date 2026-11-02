@@ -6,7 +6,7 @@ import { SITE_URL } from "@/lib/site";
 import { services } from "@/lib/services";
 
 export const metadata: Metadata = {
-  title: "Сколько стоит разработка сайта — цены 2026",
+  title: "Сколько стоит сайт: лендинг, визитка, магазин — цены 2026",
   description:
     "Цены на разработку сайтов: лендинг от 400 BYN, сайт-визитка от 530 BYN, сайт под ключ с SEO от 900 BYN, автоматизация от 500 BYN. Что входит в цену и от чего она зависит.",
   alternates: { canonical: `${SITE_URL}/ceny` },
@@ -201,6 +201,13 @@ export default function CenyPage() {
             <Link href="/cases" style={{ fontFamily: "var(--font-mono)", fontSize: "0.74rem", color: "var(--muted)", textDecoration: "none" }}>
               Сначала посмотреть кейсы →
             </Link>
+          </div>
+
+          <div style={{ marginTop: 40, fontFamily: "var(--font-mono)", fontSize: "0.74rem", color: "var(--muted)", display: "flex", gap: 24, flexWrap: "wrap" }}>
+            <span style={{ letterSpacing: "0.1em", textTransform: "uppercase" }}>Читайте также</span>
+            <Link href="/blog/kak-uskorit-sajt" style={{ color: "var(--muted)", textDecoration: "none" }}>Как ускорить загрузку сайта →</Link>
+            <Link href="/blog/vnedrenie-ii-v-biznes" style={{ color: "var(--muted)", textDecoration: "none" }}>Внедрение ИИ в малом бизнесе →</Link>
+            <Link href="/uslugi/seo-prodvizhenie" style={{ color: "var(--muted)", textDecoration: "none" }}>Зачем сайту SEO →</Link>
           </div>
         </div>
       </main>
