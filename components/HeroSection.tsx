@@ -12,9 +12,9 @@ const stats = [
 
 const tickerItems = [
   "Сайт под ключ",
+  "Сайт-визитка",
+  "Лендинг",
   "SEO-продвижение",
-  "Google Топ",
-  "Яндекс Топ",
   "Автоматизация заявок",
   "Telegram-боты",
   "Next.js",
@@ -77,7 +77,7 @@ export default function HeroSection() {
 
         <div style={{ position: "relative", zIndex: 1, maxWidth: 1200 }}>
           <div className="section-label fade-up" style={{ marginBottom: 24, animationDelay: "0.1s" }}>
-            Евгений Зайко · разработка + SEO · Беларусь · {new Date().getFullYear()}
+            Евгений Зайко · сайты для малого бизнеса · Беларусь и русскоязычный бизнес за границей · {new Date().getFullYear()}
           </div>
 
           <h1
@@ -94,8 +94,8 @@ export default function HeroSection() {
               maxWidth: 1050,
             }}
           >
-            Разработка сайтов{" "}
-            <span style={{ color: "var(--accent)" }}>с клиентами</span> - под ключ
+            Сайт с заявками{" "}
+            <span style={{ color: "var(--accent)" }}>под ключ</span> — за 5–7 дней
           </h1>
 
           <div
@@ -123,9 +123,9 @@ export default function HeroSection() {
                 margin: 0,
               }}
             >
-              Делаю сайт для вашего бизнеса и вывожу его в топ Google и Яндекса. Не «красиво», а
-              <strong style={{ color: "var(--text)" }}> с заявками и звонками</strong>: от разработки
-              до потока клиентов — один исполнитель, полная ответственность.
+              Делаю сайты для малого бизнеса, которые приносят заявки с первого дня запуска. Один
+              исполнитель отвечает за весь результат: дизайн, код, скорость, заявки в Telegram.
+              Без менеджеров, подписок и посредников.
             </p>
             <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
               <button className="btn-primary" onClick={() => scrollToSection("contact")}>
