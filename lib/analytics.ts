@@ -3,6 +3,12 @@
  * gtag может быть ещё не инициализирован (ленивая загрузка после первого
  * взаимодействия) — тогда событие кладём в dataLayer: gtag.js разберёт очередь
  * после загрузки.
+ *
+ * Активные события (не менять имена без сверки с GSC-планом и GA4):
+ *  generate_lead  — отправка формы (ContactSection) — ГЛАВНАЯ конверсия;
+ *  contact_click  — клик Telegram/email/LinkedIn (ContactSection, param: channel);
+ *  tel_click      — клик по a[href^="tel:"] (PhoneClickTracker; пока tel-ссылок
+ *                   на сайте нет — событие в reserve, сработает при появлении номеров).
  */
 interface GtagWindow {
   dataLayer?: unknown[];
