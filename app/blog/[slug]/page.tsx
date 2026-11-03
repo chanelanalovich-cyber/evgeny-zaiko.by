@@ -12,6 +12,8 @@ const BODY_LINKS: { phrase: string; href: string }[] = [
   { phrase: "переборка на статическом генераторе", href: "/uslugi/razrabotka-saitov" },
   { phrase: "подробнее в статье про перенос на другой хостинг", href: "/blog/perenos-sajta-na-drugoj-hosting" },
   { phrase: "входит в поддержку сайта", href: "/uslugi/podderzhka-sajta" },
+  { phrase: "про переезд без потери позиций у меня есть отдельная статья", href: "/blog/perenos-sajta-na-drugoj-domen" },
+  { phrase: "Telegram-бот приёма заявок", href: "/uslugi/avtomatizaciya-biznesa" },
   { phrase: "типовой блок корпоративного сайта", href: "/uslugi/korporativnyj-sajt" },
   { phrase: "разработки сайта под ключ", href: "/uslugi/razrabotka-saitov" },
   { phrase: "корпоративном сайте на CMS", href: "/uslugi/korporativnyj-sajt" },
@@ -160,6 +162,19 @@ export default async function BlogPostPage({ params }: Props) {
       mainEntityOfPage: pageUrl,
       inLanguage: "ru-RU",
     },
+    ...(post.faq && post.faq.length > 0
+      ? [
+          {
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: post.faq.map((f) => ({
+              "@type": "Question",
+              name: f.question,
+              acceptedAnswer: { "@type": "Answer", text: f.answer },
+            })),
+          },
+        ]
+      : []),
     {
       "@context": "https://schema.org",
       "@type": "BreadcrumbList",
@@ -235,6 +250,43 @@ export default async function BlogPostPage({ params }: Props) {
               <BlockRenderer key={i} block={block} />
             ))}
           </div>
+
+          {/* FAQ (если есть) — с FAQPage JSON-LD выше */}
+          {post.faq && post.faq.length > 0 && (
+            <div style={{ marginTop: 56 }}>
+              <div className="section-label" style={{ marginBottom: 20 }}>
+                {"// Частые вопросы"}
+              </div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 26 }}>
+                {post.faq.map((f) => (
+                  <div key={f.question}>
+                    <h3
+                      style={{
+                        fontFamily: "var(--font-display)",
+                        fontWeight: 600,
+                        fontSize: "1.05rem",
+                        color: "var(--text)",
+                        margin: "0 0 10px",
+                      }}
+                    >
+                      {f.question}
+                    </h3>
+                    <p
+                      style={{
+                        fontFamily: "var(--font-body)",
+                        fontSize: "0.95rem",
+                        lineHeight: 1.75,
+                        color: "var(--muted)",
+                        margin: 0,
+                      }}
+                    >
+                      {f.answer}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Перелинковка на услуги (конверсия трафика) */}
           <div style={{ borderTop: "1px solid var(--border)", marginTop: 56, paddingTop: 32 }}>

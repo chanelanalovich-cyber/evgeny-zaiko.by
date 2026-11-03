@@ -68,6 +68,7 @@ export default function ContactSection() {
                   href={href}
                   target={href.startsWith("http") ? "_blank" : undefined}
                   rel="noopener noreferrer"
+                  onClick={() => trackEvent("contact_click", { channel: label.toLowerCase() })}
                   style={{
                     display: "flex",
                     alignItems: "center",

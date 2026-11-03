@@ -8,8 +8,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // «всегда сегодня» в lastmod обесценивает сигнал для поисковых систем.
   // Обновлять при реальных изменениях страниц.
   const lastmod = new Date("2026-11-02");
-  // Страница USCA — новая контентная работа, собственная дата lastmod
+  // USCA-кейс: собственная дата последнего изменения
   const uscaLastmod = new Date("2026-10-27");
+  // Блог-хаб обновлён при добавлении статей кластера (Тильда/ИИ-агент)
+  const blogHubLastmod = new Date("2026-11-03");
 
   return [
     {
@@ -58,7 +60,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // Блог: список + статьи (кластер E, НЧ-трафик)
     {
       url: `${SITE_URL}/blog`,
-      lastModified: lastmod,
+      lastModified: blogHubLastmod,
       changeFrequency: "weekly",
       priority: 0.7,
     },
