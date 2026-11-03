@@ -11,8 +11,11 @@ const CONTACTS = [
   { label: "LinkedIn", value: "eugene-zaiko", href: "https://www.linkedin.com/in/eugene-zaiko" },
 ];
 
-export default function ContactSection() {
+export default function ContactSection({ asH1 = false }: { asH1?: boolean }) {
   const { ref, visible } = useInView();
+  // На отдельных страницах (/contacts) секция — главный заголовок страницы, там h1;
+  // на остальных (главная, статьи блога) — вложенный h2.
+  const HeadingTag = asH1 ? ("h1" as const) : ("h2" as const);
 
   return (
     <section id="contact" style={{ padding: "120px 32px" }}>
@@ -34,7 +37,7 @@ export default function ContactSection() {
             <div className="section-label" style={{ marginBottom: 20 }}>
               {"// Начнём с разговора"}
             </div>
-            <h2
+            <HeadingTag
               style={{
                 fontFamily: "var(--font-display)",
                 fontWeight: 700,
@@ -48,7 +51,7 @@ export default function ContactSection() {
               Есть задача?
               <br />
               <span style={{ color: "var(--accent)" }}>Напишите.</span>
-            </h2>
+            </HeadingTag>
             <p
               style={{
                 color: "var(--muted)",

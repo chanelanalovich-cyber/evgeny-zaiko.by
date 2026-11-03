@@ -49,7 +49,7 @@ export default function ContactsPage() {
           </nav>
         </div>
 
-        <ContactSection />
+        <ContactSection asH1 />
 
         <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 32px 120px" }}>
           <div style={{ border: "1px solid var(--border)", padding: "28px 32px", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 24 }}>

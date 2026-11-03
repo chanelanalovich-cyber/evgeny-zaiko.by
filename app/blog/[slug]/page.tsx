@@ -157,10 +157,22 @@ export default async function BlogPostPage({ params }: Props) {
       url: pageUrl,
       datePublished: post.date,
       dateModified: post.date,
-      author: { "@id": `${SITE_URL}/#person` },
-      publisher: { "@id": `${SITE_URL}/#person` },
+      // Inline-автор: на страницах блога нет @graph с Person по @id #person
+      // (та сущность определена только на главной), поэтому Google связывает
+      // статью с автором надёжнее, если данные автора продублированы здесь.
+      author: {
+        "@type": "Person",
+        name: "Евгений Зайко",
+        url: SITE_URL,
+        jobTitle: "Веб-разработчик и SEO-специалист",
+      },
+      publisher: {
+        "@type": "Person",
+        name: "Евгений Зайко",
+        url: SITE_URL,
+      },
       mainEntityOfPage: pageUrl,
-      inLanguage: "ru-RU",
+      inLanguage: "ru-BY",
     },
     ...(post.faq && post.faq.length > 0
       ? [
