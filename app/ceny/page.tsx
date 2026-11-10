@@ -10,6 +10,10 @@ export const metadata: Metadata = {
   description:
     "Цены на сайты: лендинг и визитка от 600 BYN, сайт под ключ с SEO от 990 BYN, автоматизация от 500 BYN. Что входит в цену и от чего она зависит.",
   alternates: { canonical: `${SITE_URL}/ceny` },
+  openGraph: {
+    url: `${SITE_URL}/ceny`,
+    images: [{ url: `${SITE_URL}/opengraph-image`, width: 1200, height: 630, alt: "Евгений Зайко — сайты с заявками под ключ" }],
+  },
 };
 
 const faq = [

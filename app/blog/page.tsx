@@ -16,6 +16,7 @@ export const metadata: Metadata = {
       "Чек-листы и заметки из практики: ускорение сайта, перенос на домен/хостинг, внедрение ИИ, ошибки сайта.",
     url: `${SITE_URL}/blog`,
     type: "website",
+    images: [{ url: `${SITE_URL}/opengraph-image`, width: 1200, height: 630, alt: "Блог — практика разработки и продвижения сайтов" }],
   },
 };
 

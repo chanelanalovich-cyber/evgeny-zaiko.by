@@ -10,6 +10,10 @@ export const metadata: Metadata = {
   description:
     "Евгений Зайко: full-stack разработчик и SEO-специалист. 5+ лет коммерческого опыта, 5 живых кейсов с цифрами из Search Console. Сайты, которые приносят заявки, — без менеджеров и посредников.",
   alternates: { canonical: `${SITE_URL}/about` },
+  openGraph: {
+    url: `${SITE_URL}/about`,
+    images: [{ url: `${SITE_URL}/opengraph-image`, width: 1200, height: 630, alt: "Евгений Зайко — сайты с заявками под ключ" }],
+  },
 };
 
 const jsonLd = {

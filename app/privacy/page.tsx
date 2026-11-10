@@ -9,6 +9,10 @@ export const metadata: Metadata = {
   description:
     "Политика обработки персональных данных на сайте evgeny-zaiko.by: какие данные собираются, зачем и как они защищаются.",
   alternates: { canonical: `${SITE_URL}/privacy` },
+  openGraph: {
+    url: `${SITE_URL}/privacy`,
+    images: [{ url: `${SITE_URL}/opengraph-image`, width: 1200, height: 630, alt: "Евгений Зайко — сайты с заявками под ключ" }],
+  },
   robots: { index: false },
 };
 

@@ -10,6 +10,10 @@ export const metadata: Metadata = {
   description:
     "Портфолио разработки сайтов с SEO: +1415% трафика за месяц, топ-5 по коммерческим запросам, индексация за сутки. 5 живых сайтов — цифры из Search Console и Метрики.",
   alternates: { canonical: `${SITE_URL}/cases` },
+  openGraph: {
+    url: `${SITE_URL}/cases`,
+    images: [{ url: `${SITE_URL}/opengraph-image`, width: 1200, height: 630, alt: "Евгений Зайко — сайты с заявками под ключ" }],
+  },
 };
 
 const jsonLd = {

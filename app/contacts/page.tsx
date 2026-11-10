@@ -10,6 +10,10 @@ export const metadata: Metadata = {
   description:
     `Связаться с Евгением Зайко: телефон ${PHONE_DISPLAY}, Telegram @rahunak, email zaiko.eugene@gmail.com или форма на сайте. Отвечаю лично в течение 2–3 часов. Первичная консультация — бесплатно.`,
   alternates: { canonical: `${SITE_URL}/contacts` },
+  openGraph: {
+    url: `${SITE_URL}/contacts`,
+    images: [{ url: `${SITE_URL}/opengraph-image`, width: 1200, height: 630, alt: "Евгений Зайко — сайты с заявками под ключ" }],
+  },
 };
 
 const jsonLd = {
