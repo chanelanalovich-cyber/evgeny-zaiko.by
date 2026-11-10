@@ -97,10 +97,8 @@ export default function BlogIndexPage() {
               <Link
                 key={p.slug}
                 href={`/blog/${p.slug}`}
-                className="project-card"
+                className="project-card post-row"
                 style={{
-                  display: "grid",
-                  gridTemplateColumns: "180px 1fr auto",
                   border: "1px solid var(--border)",
                   background: "var(--bg)",
                   textDecoration: "none",

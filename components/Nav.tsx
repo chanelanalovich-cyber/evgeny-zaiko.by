@@ -4,12 +4,13 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { scrollToSection } from "@/lib/useInView";
+import { PHONE_DISPLAY, PHONE_TEL } from "@/lib/site";
 
 const navLinks: [string, string, string?][] = [
   // [label, якорь на главной, href если внешняя страница]
   ["Кейсы", "cases"],
   ["Услуги", "services", "/uslugi"],
-  ["Блог", "blog", "/blog"],
+  // «Блог» — не основной раздел: ссылка живёт в футере
   ["Обо мне", "about"],
   ["Контакты", "contact"],
 ];
@@ -24,6 +25,26 @@ export default function Nav() {
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  // Меню занимает весь экран: пока оно открыто, страница под ним не скроллится
+  // (иначе на телефоне фон уезжает под оверлеем). Escape — закрыть.
+  useEffect(() => {
+    if (!menuOpen) return;
+    const prevBody = document.body.style.overflow;
+    const prevHtml = document.documentElement.style.overflow;
+    // Блокируем и html: на мобильных скроллится он, а не body
+    document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMenuOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = prevBody;
+      document.documentElement.style.overflow = prevHtml;
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [menuOpen]);
 
   const goTo = (id: string) => {
     scrollToSection(id);
@@ -70,6 +91,15 @@ export default function Nav() {
       >
         <Link
           href="/"
+          onClick={(e) => {
+            setMenuOpen(false);
+            // На главной Next не перезагружает маршрут, поэтому ссылка на «/»
+            // не сдвигала страницу — поднимаем скролл в начало вручную
+            if (pathname === "/") {
+              e.preventDefault();
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }
+          }}
           style={{
             ...linkStyle,
             fontFamily: "var(--font-mono)",
@@ -99,6 +129,16 @@ export default function Nav() {
               </Link>
             )
           )}
+          {/* Телефон в шапке — прямой дозвон (на мобильной ширине шапка свёрнута
+              в меню, там ссылка ниже + постоянная кнопка «Позвонить» внизу экрана) */}
+          <a
+            href={`tel:${PHONE_TEL}`}
+            className="nav-link"
+            data-tel-source="nav"
+            style={{ ...linkStyle, color: "var(--accent)", whiteSpace: "nowrap" }}
+          >
+            {PHONE_DISPLAY}
+          </a>
           <Link href="/#contact" className="btn-primary" style={{ padding: "8px 18px" }} onClick={(e) => anchorClick(e, "contact")}>
             Связаться →
           </Link>
@@ -106,12 +146,18 @@ export default function Nav() {
 
         <button
           onClick={() => setMenuOpen(!menuOpen)}
-          aria-label="Меню"
+          aria-label={menuOpen ? "Закрыть меню" : "Меню"}
+          aria-expanded={menuOpen}
+          aria-controls="mobile-menu"
           style={{
             background: "none",
             border: "none",
             cursor: "pointer",
-            padding: 8,
+            padding: 0,
+            width: 44,
+            height: 44,
+            alignItems: "center",
+            justifyContent: "center",
             display: "none",
             flexDirection: "column",
           }}
@@ -152,11 +198,12 @@ export default function Nav() {
       {/* Mobile menu */}
       {menuOpen && (
         <div
+          id="mobile-menu"
           style={{
             position: "fixed",
             inset: 0,
             zIndex: 99,
-            background: "rgba(8,8,8,0.97)",
+            background: "var(--bg)",
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
@@ -185,6 +232,20 @@ export default function Nav() {
               {label}
             </Link>
           ))}
+          <a
+            href={`tel:${PHONE_TEL}`}
+            data-tel-source="mobile-menu"
+            style={{
+              fontFamily: "var(--font-mono)",
+              fontSize: "1rem",
+              fontWeight: 700,
+              letterSpacing: "0.1em",
+              color: "var(--accent)",
+              textDecoration: "none",
+            }}
+          >
+            {PHONE_DISPLAY}
+          </a>
         </div>
       )}
     </>

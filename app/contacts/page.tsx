@@ -3,12 +3,12 @@ import Link from "next/link";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import ContactSection from "@/components/ContactSection";
-import { SITE_URL } from "@/lib/site";
+import { PHONE_DISPLAY, PHONE_TEL, SITE_URL } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Контакты — заказать сайт в Беларуси",
   description:
-    "Связаться с Евгением Зайко: Telegram @rahunak, email zaiko.eugene@gmail.com или форма на сайте. Отвечаю лично в течение 2–3 часов. Первичная консультация — бесплатно.",
+    `Связаться с Евгением Зайко: телефон ${PHONE_DISPLAY}, Telegram @rahunak, email zaiko.eugene@gmail.com или форма на сайте. Отвечаю лично в течение 2–3 часов. Первичная консультация — бесплатно.`,
   alternates: { canonical: `${SITE_URL}/contacts` },
 };
 
@@ -29,6 +29,7 @@ const jsonLd = {
         contactType: "sales",
         url: "https://t.me/rahunak",
         email: "zaiko.eugene@gmail.com",
+        telephone: PHONE_TEL,
         availableLanguage: ["ru"],
       },
     ],
@@ -51,8 +52,8 @@ export default function ContactsPage() {
 
         <ContactSection asH1 />
 
-        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 32px 120px" }}>
-          <div style={{ border: "1px solid var(--border)", padding: "28px 32px", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 24 }}>
+        <div className="contacts-facts-wrap" style={{ maxWidth: 1200, margin: "0 auto", padding: "0 32px 120px" }}>
+          <div className="contacts-facts">
             {[
               { t: "Время ответа", d: "2–3 часа в рабочее время (GMT+3). Срочное — Telegram, он на виду." },
               { t: "Первичная консультация", d: "Бесплатно: разберу задачу, скажу, что получится и во сколько обойдётся." },

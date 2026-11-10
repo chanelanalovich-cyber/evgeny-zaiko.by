@@ -8,7 +8,7 @@ const packages = [
     num: "01",
     name: "Сайт-визитка",
     href: "/uslugi/sajt-vizitka",
-    price: "530 BYN",
+    price: "от 600 BYN",
     promo: null,
     once: true,
     desc: "Аккуратный одностраничник для быстрого старта: дизайн, разработка, домен, базовая SEO-настройка, заявки в Telegram.",
@@ -25,7 +25,7 @@ const packages = [
     num: "02",
     name: "Сайт под ключ с SEO",
     href: "/uslugi/razrabotka-saitov",
-    price: "от 900 BYN",
+    price: "от 990 BYN",
     promo: "760 BYN · цена первых 3 клиентов",
     once: true,
     desc: "Полный цикл: анализ запросов, контент под клиенты, вывод в топ и поток заявок. Именно так сделаны сайты из кейсов ниже.",
@@ -68,7 +68,7 @@ function PackageCard({ pkg, index }: { pkg: Pkg; index: number }) {
       ref={ref as React.RefObject<HTMLDivElement>}
       style={{
         flex: 1,
-        minWidth: 300,
+        minWidth: "min(260px, 100%)",
         border: pkg.featured ? "1px solid var(--accent)" : "1px solid var(--border)",
         background: pkg.featured ? "rgba(200,255,0,0.03)" : "var(--bg)",
         padding: "40px 32px",
@@ -187,7 +187,7 @@ function PackageCard({ pkg, index }: { pkg: Pkg; index: number }) {
 
 export default function ServicesSection() {
   return (
-    <section id="services" style={{ padding: "120px 32px" }}>
+    <section id="services" className="section-pad">
       <div style={{ maxWidth: 1200, margin: "0 auto" }}>
         <div style={{ marginBottom: 64 }}>
           <div className="section-label" style={{ marginBottom: 16 }}>

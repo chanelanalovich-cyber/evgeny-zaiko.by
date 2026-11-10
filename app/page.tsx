@@ -6,7 +6,7 @@ import ProjectsSection from "@/components/ProjectsSection";
 import SkillsSection from "@/components/SkillsSection";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
-import { SITE_URL } from "@/lib/site";
+import { PHONE_TEL, SITE_URL } from "@/lib/site";
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -19,8 +19,9 @@ const jsonLd = {
       image: `${SITE_URL}/opengraph-image`,
       description:
         "Разработка сайтов под ключ с SEO-продвижением для малого бизнеса Беларуси. Сайт + топ выдачи + заявки.",
-      priceRange: "BYN 400 - BYN 3000",
+      priceRange: "BYN 600 - BYN 3000",
       email: "zaiko.eugene@gmail.com",
+      telephone: PHONE_TEL,
       address: {
         "@type": "PostalAddress",
         addressCountry: "BY",
@@ -77,7 +78,7 @@ const jsonLd = {
           name: "Сколько стоит сайт под ключ?",
           acceptedAnswer: {
             "@type": "Answer",
-            text: "Сайт-визитка — от 530 BYN, продающий лендинг — от 400 BYN, сайт под ключ с SEO — от 900 BYN (первые клиенты — 760 BYN). В цену входит всё до рабочего сайта: дизайн, разработка, домен, хостинг и приём заявок в Telegram. Корпоративный сайт на CMS — отдельная услуга, от 1500 BYN.",
+            text: "Одностраничный сайт — визитка или продающий лендинг — от 600 BYN, сайт под ключ с SEO — от 990 BYN (первые клиенты — 760 BYN). В цену входит всё до рабочего сайта: дизайн, разработка, домен, хостинг и приём заявок в Telegram. Корпоративный сайт на CMS — отдельная услуга, от 1500 BYN.",
           },
         },
         {

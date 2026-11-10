@@ -41,8 +41,8 @@ export default function SkillsSection() {
   return (
     <section
       id="skills"
+      className="section-skills"
       style={{
-        padding: "80px 32px 120px",
         background: "var(--surface)",
         borderTop: "1px solid var(--border)",
         borderBottom: "1px solid var(--border)",
@@ -51,11 +51,8 @@ export default function SkillsSection() {
       <div style={{ maxWidth: 1200, margin: "0 auto" }}>
         <div
           ref={ref as React.RefObject<HTMLDivElement>}
+          className="two-col"
           style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: 80,
-            alignItems: "start",
             opacity: visible ? 1 : 0,
             transform: visible ? "none" : "translateY(32px)",
             transition:

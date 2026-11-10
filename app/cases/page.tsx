@@ -69,12 +69,10 @@ export default function CasesPage() {
             {projects.map((p) => (
               <article
                 key={p.domain}
+                className="case-detail"
                 style={{
                   border: "1px solid var(--border)",
                   padding: "40px 36px",
-                  display: "grid",
-                  gridTemplateColumns: "1fr 260px",
-                  gap: 40,
                 }}
               >
                 <div>

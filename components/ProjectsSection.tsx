@@ -452,7 +452,7 @@ export default function ProjectsSection() {
   const { ref, visible } = useInView();
 
   return (
-    <section id="cases" style={{ padding: "120px 32px" }}>
+    <section id="cases" className="section-pad">
       <div style={{ maxWidth: 1200, margin: "0 auto" }}>
         <div
           ref={ref as React.RefObject<HTMLDivElement>}

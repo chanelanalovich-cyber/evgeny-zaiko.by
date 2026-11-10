@@ -3,9 +3,10 @@
 import { useState } from "react";
 import { useInView } from "@/lib/useInView";
 import { trackEvent } from "@/lib/analytics";
-import { SITE_HOST } from "@/lib/site";
+import { PHONE_DISPLAY, PHONE_TEL, SITE_HOST } from "@/lib/site";
 
 const CONTACTS = [
+  { label: "Телефон", value: PHONE_DISPLAY, href: `tel:${PHONE_TEL}`, primary: true },
   { label: "Telegram", value: "@rahunak", href: "https://t.me/rahunak", primary: true },
   { label: "Email", value: "zaiko.eugene@gmail.com", href: "mailto:zaiko.eugene@gmail.com" },
   { label: "LinkedIn", value: "eugene-zaiko", href: "https://www.linkedin.com/in/eugene-zaiko" },
@@ -18,15 +19,12 @@ export default function ContactSection({ asH1 = false }: { asH1?: boolean }) {
   const HeadingTag = asH1 ? ("h1" as const) : ("h2" as const);
 
   return (
-    <section id="contact" style={{ padding: "120px 32px" }}>
+    <section id="contact" className="section-pad">
       <div style={{ maxWidth: 1200, margin: "0 auto" }}>
         <div
           ref={ref as React.RefObject<HTMLDivElement>}
+          className="two-col"
           style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: 80,
-            alignItems: "start",
             opacity: visible ? 1 : 0,
             transform: visible ? "none" : "translateY(32px)",
             transition:
@@ -41,7 +39,7 @@ export default function ContactSection({ asH1 = false }: { asH1?: boolean }) {
               style={{
                 fontFamily: "var(--font-display)",
                 fontWeight: 700,
-                fontSize: "clamp(2.5rem,6vw,5rem)",
+                fontSize: "clamp(2rem,6vw,5rem)",
                 textTransform: "uppercase",
                 lineHeight: 0.92,
                 marginBottom: 24,
@@ -71,7 +69,9 @@ export default function ContactSection({ asH1 = false }: { asH1?: boolean }) {
                   href={href}
                   target={href.startsWith("http") ? "_blank" : undefined}
                   rel="noopener noreferrer"
+                  data-tel-source={href.startsWith("tel:") ? "contact-section" : undefined}
                   onClick={() => trackEvent("contact_click", { channel: label.toLowerCase() })}
+                  className="contact-row"
                   style={{
                     display: "flex",
                     alignItems: "center",
@@ -82,26 +82,28 @@ export default function ContactSection({ asH1 = false }: { asH1?: boolean }) {
                   }}
                 >
                   <span
+                    className="contact-row-label"
                     style={{
                       fontFamily: "var(--font-mono)",
                       fontSize: "0.62rem",
                       color: "var(--muted)",
                       letterSpacing: "0.1em",
-                      width: 80,
-                      flexShrink: 0,
                     }}
                   >
                     {label}
                   </span>
                   <span
+                    className="contact-row-value"
                     style={{
+                      minWidth: 0,
                       fontFamily: "var(--font-mono)",
                       fontSize: primary ? "1rem" : "0.82rem",
                       color: "var(--accent)",
                       fontWeight: primary ? 700 : 400,
                     }}
                   >
-                    {value} ↗
+                    {value}
+                    {href.startsWith("http") ? " ↗" : ""}
                   </span>
                 </a>
               ))}
@@ -245,6 +247,7 @@ function ContactForm() {
       </div>
       <input
         required
+        aria-label="Ваше имя"
         placeholder="Ваше имя"
         value={name}
         onChange={(e) => setName(e.target.value)}
@@ -254,6 +257,7 @@ function ContactForm() {
       />
       <input
         required
+        aria-label="Telegram или email для связи"
         placeholder="Telegram или email для связи"
         value={contact}
         onChange={(e) => setContact(e.target.value)}
@@ -263,6 +267,7 @@ function ContactForm() {
       />
       <textarea
         required
+        aria-label="Что нужно: сайт, клиенты из поиска или автоматизация"
         placeholder="Что нужно: сайт / клиенты из поиска / автоматизация? Какой у вас бизнес?"
         value={message}
         onChange={(e) => setMessage(e.target.value)}

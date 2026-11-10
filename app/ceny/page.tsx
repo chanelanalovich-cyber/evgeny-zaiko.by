@@ -8,7 +8,7 @@ import { services } from "@/lib/services";
 export const metadata: Metadata = {
   title: "Сколько стоит сайт: лендинг, визитка, магазин — цены 2026",
   description:
-    "Цены на разработку сайтов: лендинг от 400 BYN, сайт-визитка от 530 BYN, сайт под ключ с SEO от 900 BYN, автоматизация от 500 BYN. Что входит в цену и от чего она зависит.",
+    "Цены на сайты: лендинг и визитка от 600 BYN, сайт под ключ с SEO от 990 BYN, автоматизация от 500 BYN. Что входит в цену и от чего она зависит.",
   alternates: { canonical: `${SITE_URL}/ceny` },
 };
 
@@ -16,12 +16,12 @@ const faq = [
   {
     question: "Сколько стоит создание лендинга?",
     answer:
-      "Продающий лендинг — от 400 BYN под ключ: структура под запросы, уникальный дизайн, вёрстка, домен, хостинг, форма заявок в Telegram и базовая SEO-настройка. Итоговая цена зависит от количества секций и интеграций — после короткого брифа назову точную сумму и срок.",
+      "Продающий лендинг — от 600 BYN под ключ: структура под запросы, уникальный дизайн, вёрстка, домен, хостинг, форма заявок в Telegram и базовая SEO-настройка. Итоговая цена зависит от количества секций и интеграций — после короткого брифа назову точную сумму и срок.",
   },
   {
     question: "Сколько стоит сайт-визитка?",
     answer:
-      "От 530 BYN с онлайн-записью или каталогом — дороже: цена зависит от функционала. В визитку входит всё до рабочего сайта, включая домен, SSL и приём заявок.",
+      "От 600 BYN под ключ: дизайн, разработка, домен, хостинг, SSL и приём заявок. С онлайн-записью или каталогом — дороже: цена зависит от функционала.",
   },
   {
     question: "Почему цены ниже, чем в агентствах?",
@@ -114,13 +114,13 @@ export default function CenyPage() {
 
           {/* Таблица цен */}
           <div style={{ border: "1px solid var(--border)" }}>
-            <div style={{ display: "flex", padding: "16px 28px", borderBottom: "1px solid var(--border)", fontFamily: "var(--font-mono)", fontSize: "0.62rem", letterSpacing: "0.14em", color: "var(--muted)", textTransform: "uppercase" }}>
+            <div className="price-head" style={{ display: "flex", padding: "16px 28px", borderBottom: "1px solid var(--border)", fontFamily: "var(--font-mono)", fontSize: "0.62rem", letterSpacing: "0.14em", color: "var(--muted)", textTransform: "uppercase" }}>
               <div style={{ flex: 2 }}>Пакет</div>
               <div style={{ flex: 1 }}>Цена</div>
               <div style={{ flex: 1 }}>Срок</div>
             </div>
             {services.map((s) => (
-              <div key={s.slug} style={{ display: "flex", padding: "22px 28px", borderBottom: "1px solid var(--border)", alignItems: "center", gap: 16 }}>
+              <div key={s.slug} className="price-row" style={{ display: "flex", padding: "22px 28px", borderBottom: "1px solid var(--border)", alignItems: "center", gap: 16 }}>
                 <div style={{ flex: 2 }}>
                   <Link href={`/uslugi/${s.slug}`} style={{ color: "var(--text)", textDecoration: "none", fontFamily: "var(--font-display)", fontWeight: 600, fontSize: "1.05rem" }}>
                     {s.name} →
@@ -140,7 +140,7 @@ export default function CenyPage() {
           </div>
 
           <p style={{ color: "var(--muted)", fontFamily: "var(--font-mono)", fontSize: "0.7rem", marginTop: 16 }}>
-            * Первым трём клиентам сайт под ключ с SEO — 760 BYN вместо 900. Цены указаны без НДС.
+            * Первым трём клиентам сайт под ключ с SEO — 760 BYN вместо 990. Цены указаны без НДС.
           </p>
 
           {/* От чего зависит цена */}
@@ -148,7 +148,7 @@ export default function CenyPage() {
             <h2 style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: "clamp(1.6rem,3vw,2.4rem)", textTransform: "uppercase", color: "var(--text)", marginBottom: 24 }}>
               От чего зависит итоговая <span style={{ color: "var(--accent)" }}>цена</span>
             </h2>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 2 }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(280px, 100%), 1fr))", gap: 2 }}>
               {[
                 {
                   t: "Количество страниц и секций",

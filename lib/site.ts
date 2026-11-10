@@ -17,3 +17,12 @@ export const SITE_URL = "https://evgeny-zaiko.by";
 
 /** Отображаемая форма домена (для футеров, OG-картинки, текста писем). */
 export const SITE_HOST = "evgeny-zaiko.by";
+
+/**
+ * Контактный телефон — единый источник для шапки, секции контактов,
+ * мобильной кнопки «Позвонить» и JSON-LD (schema.org).
+ * PHONE_TEL — только цифры с кодом страны (href="tel:", schema.org telephone),
+ * PHONE_DISPLAY — форматированная форма для интерфейса.
+ */
+export const PHONE_TEL = "+375257810998";
+export const PHONE_DISPLAY = "+375 25 781-09-98";

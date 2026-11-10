@@ -28,11 +28,14 @@ export default function HeroSection() {
       {/* HERO */}
       <section
         id="hero"
+        className="hero"
         style={{
           minHeight: "100vh",
           display: "flex",
           flexDirection: "column",
-          justifyContent: "flex-end",
+          // Контент по центру экрана: с flex-end блок уезжал к низу и его
+          // центр оказывался заметно ниже середины вьюпорта
+          justifyContent: "center",
           padding: "0 32px 80px",
           position: "relative",
           overflow: "hidden",
@@ -75,9 +78,12 @@ export default function HeroSection() {
           }}
         />
 
-        <div style={{ position: "relative", zIndex: 1, maxWidth: 1200 }}>
+        <div className="hero-inner" style={{ position: "relative", zIndex: 1, maxWidth: 1200, width: "100%", margin: "0 auto" }}>
           <div className="section-label fade-up" style={{ marginBottom: 24, animationDelay: "0.1s" }}>
-            Евгений Зайко · сайты для малого бизнеса · Беларусь и русскоязычный бизнес за границей · {new Date().getFullYear()}
+            Евгений Зайко · сайты для малого бизнеса
+            <span className="hero-label-extra">
+              {" · "}Беларусь и русскоязычный бизнес за границей · {new Date().getFullYear()}
+            </span>
           </div>
 
           <h1
@@ -172,6 +178,7 @@ export default function HeroSection() {
         </div>
 
         <div
+          className="scroll-hint"
           style={{
             position: "absolute",
             bottom: 32,

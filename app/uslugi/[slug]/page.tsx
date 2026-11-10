@@ -10,7 +10,7 @@ import { services, getService, relatedServices } from "@/lib/services";
 /** Фразы в ответах FAQ, которые ведут на страницы других услуг (перелинковка кластеров) */
 const FAQ_LINKS: { phrase: string; slug: string }[] = [
   { phrase: "«Корпоративный сайт под ключ»", slug: "korporativnyj-sajt" },
-  { phrase: "кастомную разработку под ключ (от 900 BYN)", slug: "razrabotka-saitov" },
+  { phrase: "кастомную разработку под ключ (от 990 BYN)", slug: "razrabotka-saitov" },
 ];
 
 /** Рендер ответа FAQ: фразы из FAQ_LINKS превращает в ссылки на связанные услуги */
@@ -238,7 +238,7 @@ export default async function ServicePage({ params }: Props) {
                   key={item.title}
                   style={{
                     flex: "1 1 260px",
-                    minWidth: 260,
+                    minWidth: "min(260px, 100%)",
                     border: "1px solid var(--border)",
                     background: "var(--bg)",
                     padding: "32px 28px",
@@ -370,7 +370,7 @@ export default async function ServicePage({ params }: Props) {
                   key={item.title}
                   style={{
                     flex: "1 1 260px",
-                    minWidth: 260,
+                    minWidth: "min(260px, 100%)",
                     border: "1px solid var(--border)",
                     background: "var(--bg)",
                     padding: "32px 28px",
@@ -420,7 +420,7 @@ export default async function ServicePage({ params }: Props) {
         <section style={{ padding: "0 32px 96px" }}>
           <div style={{ maxWidth: 1200, margin: "0 auto", display: "flex", gap: 2, flexWrap: "wrap" }}>
             {/* Этапы */}
-            <div style={{ flex: "2 1 480px", minWidth: 320, border: "1px solid var(--border)", padding: "36px 32px" }}>
+            <div style={{ flex: "2 1 480px", minWidth: "min(260px, 100%)", border: "1px solid var(--border)", padding: "36px 32px" }}>
               <h2
                 style={{
                   fontFamily: "var(--font-display)",
@@ -473,7 +473,7 @@ export default async function ServicePage({ params }: Props) {
             <aside
               style={{
                 flex: "1 1 280px",
-                minWidth: 280,
+                minWidth: "min(240px, 100%)",
                 border: "1px solid var(--border)",
                 background: "rgba(200,255,0,0.03)",
                 padding: "36px 32px",
@@ -648,7 +648,7 @@ export default async function ServicePage({ params }: Props) {
                   href={`/uslugi/${r.slug}`}
                   style={{
                     flex: "1 1 240px",
-                    minWidth: 240,
+                    minWidth: "min(240px, 100%)",
                     border: "1px solid var(--border)",
                     background: "var(--bg)",
                     padding: "28px 24px",

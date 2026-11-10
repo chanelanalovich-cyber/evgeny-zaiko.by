@@ -7,7 +7,8 @@
   --accent: #c8ff00;
   --accent-dim: rgba(200, 255, 0, 0.12);
   --text: #f0f0f0;
-  --muted: rgba(240, 240, 240, 0.52); /* 4.5:1+ на тёмном фоне (было 0.45 = 4.04) */
+  --muted: rgba(240, 240, 240, 0.52);
+  /* 4.5:1+ на тёмном фоне (было 0.45 = 4.04) */
 }
 
 html,
@@ -17,6 +18,18 @@ body {
 
 * {
   box-sizing: border-box;
+}
+
+/* Длинные слова («конфиденциальности», почта) не должны растягивать
+   страницу шире экрана на узких телефонах */
+h1,
+h2,
+h3,
+p,
+li,
+summary,
+a {
+  overflow-wrap: break-word;
 }
 
 body {
@@ -31,9 +44,11 @@ body {
 ::-webkit-scrollbar {
   width: 4px;
 }
+
 ::-webkit-scrollbar-track {
   background: transparent;
 }
+
 ::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.15);
   border-radius: 2px;
@@ -41,14 +56,17 @@ body {
 
 /* Cursor blink */
 @keyframes blink {
+
   0%,
   100% {
     opacity: 1;
   }
+
   50% {
     opacity: 0;
   }
 }
+
 .cursor-blink {
   animation: blink 1s step-end infinite;
 }
@@ -59,11 +77,13 @@ body {
     opacity: 0;
     transform: translateY(32px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
+
 .fade-up {
   animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
@@ -75,10 +95,12 @@ body {
   from {
     transform: translateY(32px);
   }
+
   to {
     transform: translateY(0);
   }
 }
+
 #hero h1.fade-up {
   animation-name: fadeUpVisible;
 }
@@ -89,11 +111,13 @@ body {
     opacity: 0;
     transform: translateX(-40px);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);
   }
 }
+
 .slide-left {
   animation: slideLeft 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
@@ -104,11 +128,13 @@ body {
     transform: scaleX(0);
     transform-origin: left;
   }
+
   to {
     transform: scaleX(1);
     transform-origin: left;
   }
 }
+
 .line-draw {
   animation: lineDraw 1s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
@@ -119,11 +145,13 @@ body {
     opacity: 0;
     transform: translateY(8px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
+
 .count-up {
   animation: countUp 0.5s ease both;
 }
@@ -152,6 +180,7 @@ body {
     transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
     box-shadow 0.4s ease;
 }
+
 .project-card:hover {
   transform: translateY(-4px);
   box-shadow:
@@ -165,9 +194,11 @@ body {
   grid-template-columns: 280px 1fr 170px;
   cursor: pointer;
 }
+
 .case-media {
   border-right: 1px solid var(--border);
 }
+
 .case-content {
   padding: 30px 34px;
   display: flex;
@@ -176,10 +207,12 @@ body {
   gap: 16px;
   min-width: 0;
 }
+
 .case-side {
   padding: 32px 28px;
   border-left: 1px solid var(--border);
 }
+
 .case-num {
   font-family: var(--font-mono);
   font-size: 2rem;
@@ -187,17 +220,21 @@ body {
   line-height: 1;
   color: rgba(255, 255, 255, 0.08);
 }
+
 @media (max-width: 960px) {
   .case-card {
     grid-template-columns: 1fr;
   }
+
   .case-media {
     border-right: none;
     border-bottom: 1px solid var(--border);
   }
+
   .case-content {
     padding: 24px 22px;
   }
+
   .case-side {
     flex-direction: row !important;
     align-items: center !important;
@@ -206,6 +243,7 @@ body {
     border-left: none;
     border-top: 1px solid var(--border);
   }
+
   .case-num {
     font-size: 1.3rem;
   }
@@ -232,6 +270,7 @@ body {
   color: var(--muted);
   transition: color 0.2s;
 }
+
 .nav-link:hover {
   color: var(--accent);
 }
@@ -240,6 +279,7 @@ body {
 .contact-link {
   transition: opacity 0.2s;
 }
+
 .contact-link:hover {
   opacity: 0.65;
 }
@@ -267,6 +307,7 @@ body {
   display: inline-block;
   position: relative;
 }
+
 .accent-line::after {
   content: "";
   position: absolute;
@@ -279,6 +320,7 @@ body {
   transform-origin: left;
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
+
 .accent-line:hover::after {
   transform: scaleX(1);
 }
@@ -302,6 +344,7 @@ body {
     background 0.2s,
     transform 0.2s;
 }
+
 .btn-primary:hover {
   background: #d4ff1a;
   transform: translateY(-1px);
@@ -326,6 +369,7 @@ body {
     color 0.2s,
     transform 0.2s;
 }
+
 .btn-outline:hover {
   border-color: var(--accent);
   color: var(--accent);
@@ -339,6 +383,7 @@ body {
   position: relative;
   overflow: hidden;
 }
+
 .skill-bar-fill {
   height: 100%;
   background: var(--accent);
@@ -346,6 +391,7 @@ body {
   transform: scaleX(0);
   transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1);
 }
+
 .skill-bar-fill.active {
   transform: scaleX(1);
 }
@@ -355,28 +401,274 @@ body {
   from {
     transform: translateX(0);
   }
+
   to {
     transform: translateX(-50%);
   }
 }
+
 .ticker-inner {
   animation: ticker 20s linear infinite;
 }
+
 .ticker-inner:hover {
   animation-play-state: paused;
 }
 
+/* Mobile sticky call button (components/CallButton.tsx) */
+.call-button {
+  display: none;
+}
+
+/* Двухколоночные секции (О компании, Технологии, Контакты).
+   Инлайн-стили медиазапросами не перебить, поэтому сетка живёт в классе. */
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: start;
+}
+
+/* Элементы сетки не должны раздуваться по min-content: иначе длинное
+   слово в заголовке расширяет колонку за пределы экрана */
+.two-col>* {
+  min-width: 0;
+}
+
+/* Список услуг (/uslugi): цена | описание | ссылка */
+.service-row {
+  display: grid;
+  grid-template-columns: 200px 1fr auto;
+}
+
+/* Список статей (/blog): рубрика+дата | заголовок | ссылка */
+.post-row {
+  display: grid;
+  grid-template-columns: 180px 1fr auto;
+}
+
+/* Карточка кейса (/cases): описание | метрика */
+.case-detail {
+  display: grid;
+  grid-template-columns: 1fr 260px;
+  gap: 40px;
+}
+
+/* Вертикальные отступы секций главной: 120px на десктопе, меньше на мобиле */
+.section-pad {
+  padding: 60px 32px;
+}
+
+.section-skills {
+  padding: 80px 32px 120px;
+}
+
+/* Контакты: подпись | значение. На мобиле подпись уходит на свою строку,
+   иначе email не помещается рядом и тянет страницу вбок */
+.contact-row-label {
+  width: 80px;
+  flex-shrink: 0;
+}
+
+/* Блок фактов на /contacts: сетка и внутренние отступы не должны
+   выводить текст за карточку на узких экранах */
+.contacts-facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
+  gap: 24px;
+  border: 1px solid var(--border);
+  padding: 28px 32px;
+}
+
+.contacts-facts p {
+  overflow-wrap: anywhere;
+}
+
+/* Форма: активное поле подсвечиваем рамкой. Инлайн-JS хендлер фокуса
+   ненадёжен (в замере рамка оставалась серой), а :focus работает всегда */
+#contact input:focus,
+#contact textarea:focus {
+  border-color: var(--accent) !important;
+}
+
 /* Responsive helpers (from inline <style> in App) */
-@media (max-width: 860px) {
+@media (max-width: 960px) {
+
+  /* Hero: с min-height:100vh контент на телефоне выше экрана и уезжал
+     под шапку. Высота по контенту + отступ сверху под фиксированный хедер */
+  .hero {
+    min-height: auto !important;
+    justify-content: flex-start !important;
+    padding: 96px 20px 56px !important;
+  }
+
+  .contact-row {
+    flex-wrap: wrap;
+    row-gap: 2px;
+  }
+
+  .contact-row-label {
+    width: 100%;
+  }
+
+  /* Кнопка с text-transform и letter-spacing не влезала в узкую колонку
+     (статья блога), выдавливая контент за край */
+  .btn-primary,
+  .btn-outline {
+    max-width: 100%;
+    padding-left: 20px;
+    padding-right: 20px;
+    white-space: normal;
+    text-align: center;
+  }
+
+  /* iOS Safari зумит страницу при фокусе, если у поля font-size < 16px */
+  #contact input,
+  #contact textarea {
+    font-size: 16px !important;
+  }
+
+  .contacts-facts {
+    padding: 22px 20px;
+  }
+
+  .contacts-facts-wrap {
+    padding: 0 0 64px !important;
+  }
+
+  .section-pad {
+    padding: 64px 20px;
+  }
+
+  .section-skills {
+    padding: 56px 20px 64px;
+  }
+
+  /* Двухколоночные блоки и таблица услуг — в одну колонку */
+  .two-col {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+
+  .service-row,
+  .post-row,
+  .case-detail {
+    grid-template-columns: 1fr;
+  }
+
+  .service-row>div,
+  .post-row>div {
+    border-left: none !important;
+    border-right: none !important;
+  }
+
+  .service-row>div+div,
+  .post-row>div+div {
+    border-top: 1px solid var(--border);
+  }
+
+  /* Правая колонка кейса уходит под текст, внутренний бордер — сверху */
+  .case-detail {
+    gap: 24px;
+  }
+
+  .case-detail>div:last-child {
+    border-left: none !important;
+    padding-left: 0 !important;
+    border-top: 1px solid var(--border);
+    padding-top: 24px;
+  }
+
+  /* Таблица цен (/ceny): три узкие колонки на телефоне не помещаются,
+     поэтому шапка скрыта, а строка — карточка «пакет» + «цена | срок». */
+  .price-head {
+    display: none !important;
+  }
+
+  .price-row {
+    display: grid !important;
+    grid-template-columns: 1fr auto;
+    gap: 8px 14px !important;
+    padding: 20px !important;
+  }
+
+  .price-row>div:nth-child(1) {
+    grid-column: 1 / -1;
+  }
+
+  .price-row>div:nth-child(3) {
+    text-align: right;
+  }
+
+  .price-row>div:nth-child(3)::before {
+    content: "срок: ";
+    color: var(--muted);
+  }
+
   .hidden-mobile {
     display: none !important;
   }
+
   .show-mobile {
     display: flex !important;
   }
+
+  /* Вертикальная подсказка «Прокрутить» в hero на мобиле наезжает на цифры */
+  .scroll-hint {
+    display: none !important;
+  }
+
+  /* Кнопка «Позвонить» всегда внизу экрана; отступ body — чтобы она не
+     перекрывала конец страницы (футер). env(safe-area-inset-bottom) — для iPhone. */
+  .call-button {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 14px 20px calc(14px + env(safe-area-inset-bottom));
+    background: var(--accent);
+    color: #000;
+    font-family: var(--font-mono), monospace;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-decoration: none;
+    box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.45);
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    padding-bottom: calc(56px + env(safe-area-inset-bottom));
+  }
 }
+
 @media (max-width: 600px) {
-  section {
+
+  /* В hero длинная подпись занимала 4 строки сразу под шапкой — на телефоне
+     оставляем имя и специализацию (ключевая фраза), географию и год скрываем:
+     они есть в title/description, H1 и футере */
+  .hero-label-extra {
+    display: none;
+  }
+
+  /* На 320px «от 400 BYN/мес» и «срок: постоянно» вдвоём не влезают:
+     срок уходит на отдельную строку */
+  .price-row {
+    grid-template-columns: 1fr;
+  }
+
+  .price-row>div:nth-child(3) {
+    text-align: left;
+  }
+
+  section,
+  main {
     padding-left: 20px !important;
     padding-right: 20px !important;
   }

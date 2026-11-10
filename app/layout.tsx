@@ -3,6 +3,7 @@ import { Inter, JetBrains_Mono, Oswald } from "next/font/google";
 import YandexMetrika from "@/components/YandexMetrika";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 import PhoneClickTracker from "@/components/PhoneClickTracker";
+import CallButton from "@/components/CallButton";
 import { SITE_URL } from "@/lib/site";
 import "./globals.css";
 const SITE_NAME = "Евгений Зайко — сайты с клиентами под ключ";
@@ -31,7 +32,7 @@ export const metadata: Metadata = {
     template: "%s | Евгений Зайко",
   },
   description:
-    "Сайты под ключ с SEO: лендинги и визитки от 400 BYN, 5–7 дней. Реальный кейс: рост поискового трафика с 19 до 288 кликов в месяц. Домен, хостинг, заявки — в цене. Расчёт за 1 день.",
+    "Сайты под ключ с SEO: лендинги и визитки от 600 BYN, 5–7 дней. Реальный кейс: рост поискового трафика с 19 до 288 кликов в месяц. Домен, хостинг, заявки — в цене. Расчёт за 1 день.",
   keywords: [
     "разработка сайта под ключ беларусь",
     "создание сайтов минск",
@@ -60,7 +61,7 @@ export const metadata: Metadata = {
     siteName: SITE_NAME,
     title: "Сайт с заявками под ключ — за 5–7 дней",
     description:
-      "Сайты для малого бизнеса с заявками с первого дня: лендинг от 400 BYN, визитка от 530 BYN, без абонплаты и менеджеров. 5 живых кейсов с цифрами.",
+      "Сайты для малого бизнеса с заявками с первого дня: лендинг или визитка от 600 BYN, без абонплаты и менеджеров. 5 живых кейсов с цифрами.",
   },
   twitter: {
     card: "summary_large_image",
@@ -105,6 +106,9 @@ export default function RootLayout({
 
         {/* Глобальный трекер кликов по телефонным ссылкам → GA4 tel_click */}
         {isProduction && <PhoneClickTracker />}
+
+        {/* Кнопка «Позвонить» — sitewide, видна только на мобильной ширине */}
+        <CallButton />
       </body>
     </html>
   );

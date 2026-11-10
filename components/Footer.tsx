@@ -8,6 +8,7 @@ import Link from "next/link";
 const footerLinks: { label: string; href: string }[] = [
   { label: "Цены", href: "/ceny" },
   { label: "Кейсы", href: "/cases" },
+  { label: "Обо мне", href: "/about" },
   { label: "Блог", href: "/blog" },
   { label: "Сайт-визитка", href: "/uslugi/sajt-vizitka" },
   { label: "Разработка под ключ", href: "/uslugi/razrabotka-saitov" },

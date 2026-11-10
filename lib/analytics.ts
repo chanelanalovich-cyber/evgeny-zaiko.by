@@ -7,8 +7,8 @@
  * Активные события (не менять имена без сверки с GSC-планом и GA4):
  *  generate_lead  — отправка формы (ContactSection) — ГЛАВНАЯ конверсия;
  *  contact_click  — клик Telegram/email/LinkedIn (ContactSection, param: channel);
- *  tel_click      — клик по a[href^="tel:"] (PhoneClickTracker; пока tel-ссылок
- *                   на сайте нет — событие в reserve, сработает при появлении номеров).
+ *  tel_click      — клик по a[href^="tel:"] (PhoneClickTracker; источники в
+ *                   data-tel-source: nav, mobile-menu, contact-section, mobile-sticky).
  */
 interface GtagWindow {
   dataLayer?: unknown[];

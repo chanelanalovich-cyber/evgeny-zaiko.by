@@ -8,14 +8,14 @@ import { services } from "@/lib/services";
 export const metadata: Metadata = {
   title: "Услуги — сайты, SEO и автоматизация",
   description:
-    "Услуги Евгения Зайко: разработка сайтов под ключ, создание продающих лендингов, сайт-визитки, SEO-продвижение в Google и Яндексе, автоматизация бизнеса и ИИ-агенты. Беларусь, цены от 400 BYN.",
+    "Услуги Евгения Зайко: разработка сайтов под ключ, создание продающих лендингов, сайт-визитки, SEO-продвижение в Google и Яндексе, автоматизация бизнеса и ИИ-агенты. Беларусь, цены от 600 BYN.",
   alternates: {
     canonical: `${SITE_URL}/uslugi`,
   },
   openGraph: {
     title: "Услуги — сайты, SEO и автоматизация | Евгений Зайко",
     description:
-      "Разработка сайтов, лендингов, сайт-визиток, SEO-продвижение и автоматизация бизнеса. Беларусь, цены от 400 BYN.",
+      "Разработка сайтов, лендингов, сайт-визиток, SEO-продвижение и автоматизация бизнеса. Беларусь, цены от 600 BYN.",
     url: `${SITE_URL}/uslugi`,
     type: "website",
   },
@@ -112,10 +112,8 @@ export default function ServicesIndexPage() {
               <Link
                 key={s.slug}
                 href={`/uslugi/${s.slug}`}
-                className="project-card"
+                className="project-card service-row"
                 style={{
-                  display: "grid",
-                  gridTemplateColumns: "200px 1fr auto",
                   border: "1px solid var(--border)",
                   background: "var(--bg)",
                   textDecoration: "none",
@@ -175,6 +173,7 @@ export default function ServicesIndexPage() {
                       lineHeight: 1.65,
                       color: "var(--muted)",
                       margin: 0,
+                      maxWidth: 720,
                     }}
                   >
                     {s.lead.split(". ").slice(0, 2).join(". ")}.
@@ -239,7 +238,7 @@ export default function ServicesIndexPage() {
                     className="project-card"
                     style={{
                       flex: 1,
-                      minWidth: 320,
+                      minWidth: "min(260px, 100%)",
                       border: "1px solid var(--border)",
                       background: "var(--bg)",
                       padding: "32px 28px",

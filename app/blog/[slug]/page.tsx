@@ -19,7 +19,7 @@ const BODY_LINKS: { phrase: string; href: string }[] = [
   { phrase: "корпоративном сайте на CMS", href: "/uslugi/korporativnyj-sajt" },
   { phrase: "аудит сайта с планом правок занимает неделю", href: "/uslugi/seo-prodvizhenie" },
   { phrase: "требуют разработчика: разметка, цели, техочистка", href: "/uslugi/podderzhka-sajta" },
-  { phrase: "от 530 BYN за визитку", href: "/uslugi/sajt-vizitka" },
+  { phrase: "от 600 BYN за визитку", href: "/uslugi/sajt-vizitka" },
   { phrase: "Сайт-визитка — маленький проект", href: "/uslugi/sajt-vizitka" },
   { phrase: "на странице цены", href: "/ceny" },
 ];

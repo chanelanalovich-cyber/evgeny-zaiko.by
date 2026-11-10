@@ -8,16 +8,14 @@ export default function AboutSection() {
   const { ref, visible } = useInView();
 
   return (
-    <section id="about" style={{ padding: "120px 32px" }}>
+    <section id="about" className="section-pad">
       <div
-        ref={ref as React.RefObject<HTMLDivElement>}
-        style={{
-          maxWidth: 1200,
-          margin: "0 auto",
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr",
-          gap: 80,
-          alignItems: "center",
+          ref={ref as React.RefObject<HTMLDivElement>}
+          className="two-col"
+          style={{
+            maxWidth: 1200,
+            margin: "0 auto",
+            alignItems: "center",
           opacity: visible ? 1 : 0,
           transform: visible ? "none" : "translateY(32px)",
           transition:
@@ -45,7 +43,7 @@ export default function AboutSection() {
           </h2>
           <p style={{ color: "var(--muted)", lineHeight: 1.75, fontSize: "1rem", marginBottom: 20 }}>
             Меня зовут Евгений, я full-stack разработчик с 5+ годами коммерческого опыта. Делаю
-            <strong style={{ color: "var(--text)" }}>сайты для малого бизнеса</strong>, которые
+            <strong style={{ color: "var(--text)" }}> сайты для малого бизнеса</strong>, которые
             приносят заявки: в Беларуси, России и для русскоязычных компаний в США и Канаде.
           </p>
           <p style={{ color: "var(--muted)", lineHeight: 1.75, fontSize: "1rem", marginBottom: 36 }}>
