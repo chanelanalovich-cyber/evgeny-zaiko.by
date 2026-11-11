@@ -15,7 +15,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return [
     {
-      url: `${SITE_URL}/`,
+      // Без завершающего слэша — ровно та форма, что отдаёт canonical главной.
+      url: SITE_URL,
       lastModified: lastmod,
       changeFrequency: "weekly",
       priority: 1,

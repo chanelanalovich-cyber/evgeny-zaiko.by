@@ -16,6 +16,9 @@ const oswald = Oswald({
   weight: ["500", "600", "700"],
 });
 
+// Inter предзагружается: если он придёт после первой отрисовки, подмена шрифта
+// меняет высоту текста и сдвигает центрированный hero (CLS). Mono — только
+// мелкие подписи, его можно не предзагружать: файлы не конкурируют с CSS.
 const inter = Inter({
   variable: "--font-body",
   subsets: ["latin", "cyrillic"],
@@ -25,6 +28,7 @@ const jetbrainsMono = JetBrains_Mono({
   variable: "--font-mono",
   subsets: ["latin", "cyrillic"],
   weight: ["400", "500"],
+  preload: false,
 });
 
 export const metadata: Metadata = {
@@ -49,9 +53,10 @@ export const metadata: Metadata = {
   authors: [{ name: "Евгений Зайко", url: SITE_URL }],
   creator: "Евгений Зайко",
   publisher: "Евгений Зайко",
-  alternates: {
-    canonical: SITE_URL,
-  },
+  // canonical намеренно НЕ задаётся здесь: значение из layout наследовалось
+  // любой страницей без своего metadata (включая 404), и такие URL молча
+  // канонизировались на главную. Теперь canonical объявляет сама страница
+  // (app/page.tsx для главной, остальные — в своих metadata).
   verification: {
     google: "QLy0JClFzAhEnJUv2yUkP95bN0TUzdtDE784k9UN2pQ",
     yandex: "89763e265512c83d",

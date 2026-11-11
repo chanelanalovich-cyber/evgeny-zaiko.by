@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Nav from "@/components/Nav";
 import HeroSection from "@/components/HeroSection";
 import AboutSection from "@/components/AboutSection";
@@ -7,6 +8,18 @@ import SkillsSection from "@/components/SkillsSection";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
 import { PHONE_TEL, SITE_URL } from "@/lib/site";
+
+/**
+ * canonical главной объявляется здесь, а не в layout: значение из layout
+ * наследовалось всеми страницами без своего metadata — включая 404.
+ * Без searchParams в URL UTM-метки (?utm_source=…) не создают отдельных
+ * адресов: canonical всегда указывает на чистый https://evgeny-zaiko.by.
+ */
+export const metadata: Metadata = {
+  alternates: {
+    canonical: SITE_URL,
+  },
+};
 
 const jsonLd = {
   "@context": "https://schema.org",
