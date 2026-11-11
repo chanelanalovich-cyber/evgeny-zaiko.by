@@ -20,6 +20,14 @@ const nextConfig: NextConfig = {
         destination: "https://evgeny-zaiko.by/:path*",
         permanent: true,
       },
+      // Файл для LLM-краулеров живёт по стандартному адресу /llms.txt
+      // (llmstxt.org); старый /llm.txt сохраняем как постоянный редирект,
+      // если он где-то уже проиндексирован или залинкован.
+      {
+        source: "/llm.txt",
+        destination: "/llms.txt",
+        permanent: true,
+      },
     ];
   },
   images: {

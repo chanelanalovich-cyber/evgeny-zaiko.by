@@ -8,10 +8,12 @@ import { SITE_URL } from "@/lib/site";
 import "./globals.css";
 const SITE_NAME = "Евгений Зайко — сайты с клиентами под ключ";
 
+// Только реально используемые начертания: каждое лишнее — это отдельный файл
+// woff2 в <link rel="preload"> и лишняя конкуренция с CSS за полосу на мобильном.
 const oswald = Oswald({
   variable: "--font-display",
   subsets: ["latin", "cyrillic"],
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["500", "600", "700"],
 });
 
 const inter = Inter({
@@ -63,11 +65,11 @@ export const metadata: Metadata = {
     description:
       "Сайты для малого бизнеса с заявками с первого дня: лендинг или визитка от 600 BYN, без абонплаты и менеджеров. 5 живых кейсов с цифрами.",
   },
+  // twitter: title/description намеренно НЕ задаём на уровне layout: значения
+  // наследовались всеми страницами, и twitter:title был одинаковым на всех URL.
+  // Без них X/Twitter берёт og:title/og:description — они у каждой страницы свои.
   twitter: {
     card: "summary_large_image",
-    title: "Сайт с заявками под ключ — за 5–7 дней | Евгений Зайко",
-    description:
-      "Сайты для малого бизнеса под ключ с заявками. Кейс: рост трафика с 19 до 288 кликов/мес.",
   },
   robots: {
     index: true,

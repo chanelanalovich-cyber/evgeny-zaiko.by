@@ -4,14 +4,14 @@ import { useEffect } from 'react'
 
 /**
  * Яндекс.Метрика — загрузка после первого взаимодействия пользователя
- * (pointerdown/keydown/touchstart/scroll) ИЛИ через 3.5 c.
+ * (pointerdown/keydown/touchstart/scroll) ИЛИ после полной загрузки страницы,
+ * в простое браузера (load → requestIdleCallback).
  *
- * Почему не next/script strategy="lazyOnload": тот срабатывает на onload+idle —
- * внутри окна замера Lighthouse. Парсинг tag.js + инициализация Вебвизора давали
- * длинные задачи и роняли TBT (регресс до 72 на PageSpeed).
- * Лабораторный замер не взаимодействует со страницей → tag.js не исполняется →
- * TBT чистый. Реальные пользователи взаимодействуют почти сразу — данные почти
- * не теряются.
+ * Почему не next/script strategy="lazyOnload" и не таймер: фиксированные 3.5 c
+ * попадали в окно замера Lighthouse (LCP ~3–4 c, TBT считается до TTI) —
+ * tag.js добавлял ~100–150 ms блокировки главного потока и удлинял TTI.
+ * Привязка к load + idle гарантирует, что первый экран и LCP уже отрисованы.
+ * Реальные пользователи взаимодействуют раньше idle — данные почти не теряются.
  *
  * Вебвизор отключён (webvisor: false) — самая тяжёлая часть Метрики
  * (MutationObserver всего DOM). Поведенческие факторы Яндекса работают и без него
@@ -25,6 +25,14 @@ import { useEffect } from 'react'
 
 // TODO: заменить 0 на номер счётчика Яндекс.Метрики
 const YANDEX_METRIKA_COUNTER_ID = 113363175;
+
+/**
+ * Минимальная выдержка от начала навигации до загрузки счётчика (без взаимодействия).
+ * `load` на этом сайте наступает рано (~0.4 c), и одного idle недостаточно:
+ * tag.js стартовал в 1.3 c, то есть до LCP, и давал ~120 ms TBT.
+ * Живые визиты не теряются: любое взаимодействие грузит счётчик сразу.
+ */
+const FALLBACK_DELAY_MS = 6000;
 
 /** Функция-очередь Метрики: вызовы копятся в .a, таймстемп создания — в .l */
 type YmFn = ((...args: unknown[]) => void) & { a?: unknown[][]; l?: number }
@@ -42,6 +50,9 @@ export default function YandexMetrika({ enabled }: { enabled: boolean }) {
     // Синхронный guard: два события могут прийти в один тик (touchstart +
     // pointerdown), setState здесь не спасает от двойной загрузки.
     let started = false
+    let idleHandle: number | null = null
+    let fallbackTimer = 0
+    let scheduleIdle: () => void = () => {}
 
     const load = () => {
       if (started) return
@@ -91,14 +102,39 @@ export default function YandexMetrika({ enabled }: { enabled: boolean }) {
     const options: AddEventListenerOptions = { once: true, passive: true }
     const cleanup = () => {
       events.forEach((e) => window.removeEventListener(e, load, options))
-      window.clearTimeout(idleTimer)
+      window.removeEventListener('load', scheduleIdle)
+      if (idleHandle !== null && typeof window.cancelIdleCallback === 'function') {
+        window.cancelIdleCallback(idleHandle)
+      }
+      idleHandle = null
+      window.clearTimeout(fallbackTimer)
     }
 
     events.forEach((e) => window.addEventListener(e, load, options))
-    // Fallback-таймер: если пользователь ничего не сделал (открыл и читает),
-    // tag.js не загрузится и визит потеряется. GA4 такой таймер имеет (3.5 с),
-    // Метрике добавляем аналогичный.
-    const idleTimer = window.setTimeout(load, 3500)
+
+    // Fallback для «молчаливых» посетителей: после load ждём idle-окно,
+    // таймер 3 c — страховка, если простоя так и не будет.
+    scheduleIdle = () => {
+      const run = () => {
+        idleHandle = null
+        load()
+      }
+      const remaining = Math.max(0, FALLBACK_DELAY_MS - performance.now())
+      fallbackTimer = window.setTimeout(() => {
+        if (typeof window.requestIdleCallback === 'function') {
+          idleHandle = window.requestIdleCallback(run, { timeout: 3000 })
+        } else {
+          run()
+        }
+      }, remaining)
+    }
+
+    if (document.readyState === 'complete') {
+      scheduleIdle()
+    } else {
+      window.addEventListener('load', scheduleIdle, { once: true })
+    }
+
     return cleanup
   }, [enabled])
 
