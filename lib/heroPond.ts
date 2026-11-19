@@ -126,7 +126,9 @@ const FLOOR: RGB[] = [
 ].map(hex);
 
 function buildTerrain(w: number, h: number, seed: number): HTMLCanvasElement {
-  const s = clamp(Math.sqrt(340000 / (w * h)), 0.25, 0.6);
+  // дно видно сквозь воду размытым — на телефоне хватает 0.45× (вдвое меньше пикселей
+  // в одноразовом расчёте рельефа)
+  const s = clamp(Math.sqrt(340000 / (w * h)), 0.25, w < 700 ? 0.45 : 0.6);
   const cw = Math.ceil(w * s);
   const ch = Math.ceil(h * s);
   const n1 = makeNoise(seed);
@@ -1302,7 +1304,8 @@ export function createPond(container: HTMLElement): PondHandle | null {
     // прогреваем, чтобы рыбы стартовали уже в движении и с изогнутым телом
     const tmpWater = world.water;
     world.water = null;
-    for (let i = 0; i < 90; i++) for (const k of world.kois) k.update(1 / 30, world, noise);
+    const warm = W < 900 ? 40 : 90;
+    for (let i = 0; i < warm; i++) for (const k of world.kois) k.update(1 / 30, world, noise);
     world.water = tmpWater;
 
     // Кувшинки — только вне текстового блока: справа и у нижнего края.
@@ -1333,7 +1336,7 @@ export function createPond(container: HTMLElement): PondHandle | null {
       const pad = world.pads[i];
       world.flowers.push(new Lotus(pad, pad.r * rnd(0.44, 0.54)));
     }
-    for (let i = 0; i < 18; i++) world.glints.push(new Glint(W, H));
+    for (let i = 0; i < (narrow ? 12 : 18); i++) world.glints.push(new Glint(W, H));
   }
 
   function resize() {
@@ -1343,8 +1346,12 @@ export function createPond(container: HTMLElement): PondHandle | null {
     const sizeChanged = Math.abs(W - world.W) > 2 || Math.abs(H - world.H) > 2;
     world.W = W;
     world.H = H;
-    const dpr = Math.min(window.devicePixelRatio || 1, 1.25);
-    Q = clamp(window.devicePixelRatio || 1, 1, 1.25);
+    // Вода — мягкая среда без мелких деталей: на телефоне рендерим её в 0.75
+    // от CSS-пикселя и растягиваем билинейно. Экономия ~45% пикселей в
+    // полноэкранном проходе (на нём же и main-thread в софтверном рендере).
+    const cap = W < 700 ? 0.75 : 1.25;
+    const dpr = Math.min(window.devicePixelRatio || 1, cap);
+    Q = clamp(window.devicePixelRatio || 1, W < 700 ? 0.75 : 1, cap);
     for (const c of [koiLayer, surfLayer, shadowLayer]) {
       c.width = Math.round(W * Q);
       c.height = Math.round(H * Q);

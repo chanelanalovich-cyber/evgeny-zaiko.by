@@ -64,6 +64,8 @@ export default function HeroSection() {
     let detach: (() => void) | null = null;
     let idleId: number | null = null;
     let timeoutId: number | null = null;
+    let startTimer: number | null = null;
+    let started = false;
 
     const boot = async () => {
       if (cancelled) return;
@@ -78,16 +80,52 @@ export default function HeroSection() {
       detach = attachLiquidTitle(title, () => pondRef.current);
     };
 
-    // Safari без requestIdleCallback просто стартует чуть раньше
-    const idle = typeof window.requestIdleCallback === "function" ? window.requestIdleCallback : null;
-    if (idle) {
-      idleId = idle(boot, { timeout: 2000 });
+    /**
+     * Инициализация WebGL — синхронная задача: компиляция шейдеров, рельеф дна,
+     * прогрев кои. Держим её вне окна первой отрисовки: старт только после load,
+     * чтобы она не конкурировала за главный поток с FCP/LCP.
+     * Кто начал взаимодействовать раньше — получает эффект сразу.
+     */
+    const start = () => {
+      if (started || cancelled) return;
+      started = true;
+      window.removeEventListener("load", start);
+      window.removeEventListener("pointerdown", start);
+      window.removeEventListener("keydown", start);
+      if (startTimer !== null) window.clearTimeout(startTimer);
+      // Два кадра после load: гарантия, что первый экран уже отрисован
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          if (cancelled) return;
+          // Safari без requestIdleCallback просто стартует чуть раньше
+          const idle =
+            typeof window.requestIdleCallback === "function" ? window.requestIdleCallback : null;
+          if (idle) {
+            idleId = idle(boot, { timeout: 1200 });
+          } else {
+            timeoutId = window.setTimeout(boot, 300);
+          }
+        });
+      });
+    };
+
+    if (document.readyState === "complete") {
+      start();
     } else {
-      timeoutId = window.setTimeout(boot, 400);
+      window.addEventListener("load", start, { once: true });
+      // load ждёт картинки всей страницы; если он затянулся — не держим пруд
+      // в невидимом ожидании
+      startTimer = window.setTimeout(start, 2000);
     }
+    window.addEventListener("pointerdown", start, { passive: true, once: true });
+    window.addEventListener("keydown", start, { once: true });
 
     return () => {
       cancelled = true;
+      window.removeEventListener("load", start);
+      window.removeEventListener("pointerdown", start);
+      window.removeEventListener("keydown", start);
+      if (startTimer !== null) window.clearTimeout(startTimer);
       if (idleId !== null) window.cancelIdleCallback(idleId);
       if (timeoutId !== null) window.clearTimeout(timeoutId);
       detach?.();
