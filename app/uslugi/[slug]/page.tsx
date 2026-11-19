@@ -416,6 +416,97 @@ export default async function ServicePage({ params }: Props) {
           </div>
         </section>
 
+        {/* Заказать сайт: цены и сроки (коммерческий блок) */}
+        {service.commercial && (
+          <section id="ceny" style={{ padding: "0 32px 96px" }}>
+            <div style={{ maxWidth: 1200, margin: "0 auto" }}>
+              <div className="section-label" style={{ marginBottom: 16 }}>
+                {"// Стоимость"}
+              </div>
+              <h2
+                style={{
+                  fontFamily: "var(--font-display)",
+                  fontWeight: 700,
+                  fontSize: "clamp(1.6rem,3vw,2.4rem)",
+                  textTransform: "uppercase",
+                  color: "var(--text)",
+                  margin: 0,
+                  marginBottom: 32,
+                }}
+              >
+                {service.commercial.heading}{" "}
+                <span style={{ color: "var(--accent)" }}>{service.commercial.accent}</span>
+              </h2>
+              <div style={{ border: "1px solid var(--border)" }}>
+                {service.commercial.rows.map((row, i) => (
+                  <div
+                    key={row.label}
+                    style={{
+                      display: "flex",
+                      flexWrap: "wrap",
+                      gap: "8px 24px",
+                      alignItems: "baseline",
+                      padding: "18px 24px",
+                      borderTop: i === 0 ? "none" : "1px solid var(--border)",
+                    }}
+                  >
+                    <div
+                      style={{
+                        flex: "2 1 240px",
+                        minWidth: "min(240px, 100%)",
+                        fontFamily: "var(--font-body)",
+                        fontWeight: 600,
+                        fontSize: "0.95rem",
+                        color: "var(--text)",
+                      }}
+                    >
+                      {row.label}
+                    </div>
+                    <div
+                      style={{
+                        flex: "1 1 140px",
+                        fontFamily: "var(--font-mono)",
+                        fontSize: "0.8rem",
+                        color: "var(--accent)",
+                      }}
+                    >
+                      {row.price}
+                    </div>
+                    <div
+                      style={{
+                        flex: "1 1 120px",
+                        fontFamily: "var(--font-mono)",
+                        fontSize: "0.8rem",
+                        color: "var(--muted)",
+                      }}
+                    >
+                      {row.term}
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <p
+                style={{
+                  fontFamily: "var(--font-body)",
+                  fontSize: "0.85rem",
+                  lineHeight: 1.7,
+                  color: "var(--muted)",
+                  margin: "20px 0 28px",
+                }}
+              >
+                {service.commercial.note}
+              </p>
+              <a
+                href="#contact-anchor"
+                className="btn-primary"
+                style={{ display: "inline-block" }}
+              >
+                Заказать сайт →
+              </a>
+            </div>
+          </section>
+        )}
+
         {/* Этапы + кейс-доказательство */}
         <section style={{ padding: "0 32px 96px" }}>
           <div style={{ maxWidth: 1200, margin: "0 auto", display: "flex", gap: 2, flexWrap: "wrap" }}>

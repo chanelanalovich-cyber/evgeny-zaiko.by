@@ -144,16 +144,16 @@ export default function HeroSection() {
           <p className="hero__kicker section-label">
             Евгений Зайко · сайты для малого бизнеса
             <span className="hero-label-extra">
-              {" · "}Беларусь и русскоязычный бизнес за границей · {new Date().getFullYear()}
+              {" · "}Беларусь и бизнес за границей · {new Date().getFullYear()}
             </span>
           </p>
 
           <h1
             ref={titleRef}
             className="hero__title"
-            aria-label="Сайт с заявками под ключ — за 5–7 дней"
+            aria-label="Разработка сайтов под ключ — сайт с заявками за 5–7 дней"
           >
-            <LiquidLine text="САЙТ С ЗАЯВКАМИ" />{" "}
+            <LiquidLine text="РАЗРАБОТКА САЙТОВ" />{" "}
             <LiquidLine text="ПОД КЛЮЧ" lime />
           </h1>
 

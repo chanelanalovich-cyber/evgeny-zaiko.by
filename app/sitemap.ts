@@ -8,6 +8,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // «всегда сегодня» в lastmod обесценивает сигнал для поисковых систем.
   // Обновлять при реальных изменениях страниц.
   const lastmod = new Date("2026-11-02");
+  // 19.11.2026: on-page главной (title/H1) + новые страницы кластера «разработка сайтов»
+  const onPageLastmod = new Date("2026-11-19");
+  const clusterLastmod = new Date("2026-11-19");
+  const clusterSlugs = new Set([
+    "razrabotka-saitov",
+    "sozdanie-sajtov",
+    "razrabotka-sajtov-v-minske",
+    "razrabotka-sajtov-na-cms",
+    "zakazat-sajt",
+  ]);
   // USCA-кейс: собственная дата последнего изменения
   const uscaLastmod = new Date("2026-10-27");
   // Блог-хаб обновлён при добавлении статей кластера (Тильда/ИИ-агент)
@@ -17,19 +27,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
     {
       // Без завершающего слэша — ровно та форма, что отдаёт canonical главной.
       url: SITE_URL,
-      lastModified: lastmod,
+      lastModified: onPageLastmod,
       changeFrequency: "weekly",
       priority: 1,
     },
     {
       url: `${SITE_URL}/uslugi`,
-      lastModified: lastmod,
+      lastModified: onPageLastmod,
       changeFrequency: "monthly",
       priority: 0.9,
     },
     ...services.map((s) => ({
       url: `${SITE_URL}/uslugi/${s.slug}`,
-      lastModified: s.cluster === "USCA" ? uscaLastmod : lastmod,
+      lastModified:
+        s.cluster === "USCA" ? uscaLastmod : clusterSlugs.has(s.slug) ? clusterLastmod : lastmod,
       changeFrequency: "monthly" as const,
       priority: s.cluster === "USCA" ? 0.85 : 0.8,
     })),

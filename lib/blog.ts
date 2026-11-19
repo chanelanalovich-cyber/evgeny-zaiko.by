@@ -69,6 +69,7 @@ export const posts: BlogPost[] = [
     related: [
       { label: "Услуга: поддержка и ускорение сайта", href: "/uslugi/podderzhka-sajta" },
       { label: "Услуга: разработка сайта под ключ на Next.js", href: "/uslugi/razrabotka-saitov" },
+      { label: "Услуга: сайт на CMS без потери скорости", href: "/uslugi/razrabotka-sajtov-na-cms" },
       { label: "Кейс: индексация за сутки", href: "/cases" },
     ],
   },
@@ -173,6 +174,7 @@ export const posts: BlogPost[] = [
     ],
     related: [
       { label: "Услуга: поддержка сайта", href: "/uslugi/podderzhka-sajta" },
+      { label: "Услуга: переезд на CMS — WordPress или Drupal", href: "/uslugi/razrabotka-sajtov-na-cms" },
       { label: "Статья: перенос на другой домен", href: "/blog/perenos-sajta-na-drugoj-domen" },
     ],
   },
@@ -276,6 +278,7 @@ export const posts: BlogPost[] = [
     related: [
       { label: "Услуга: SEO-аудит и продвижение", href: "/uslugi/seo-prodvizhenie" },
       { label: "Услуга: разработка сайта под ключ", href: "/uslugi/razrabotka-saitov" },
+      { label: "Услуга: создание сайтов — как избежать ошибок с самого начала", href: "/uslugi/sozdanie-sajtov" },
       { label: "Услуга: корпоративный сайт под ключ", href: "/uslugi/korporativnyj-sajt" },
       { label: "Статья: как ускорить загрузку сайта", href: "/blog/kak-uskorit-sajt" },
     ],
@@ -325,6 +328,9 @@ export const posts: BlogPost[] = [
     ],
     related: [
       { label: "Услуга: сайт-визитка под ключ — от 600 BYN", href: "/uslugi/sajt-vizitka" },
+      { label: "Услуга: создание сайтов под ключ", href: "/uslugi/sozdanie-sajtov" },
+      { label: "Услуга: разработка сайтов в Минске", href: "/uslugi/razrabotka-sajtov-v-minske" },
+      { label: "Услуга: заказать сайт — цена и сроки", href: "/uslugi/zakazat-sajt" },
       { label: "Страница цен: все пакеты и что входит", href: "/ceny" },
       { label: "Статья: как ускорить загрузку сайта", href: "/blog/kak-uskorit-sajt" },
     ],
@@ -410,6 +416,8 @@ export const posts: BlogPost[] = [
     ],
     related: [
       { label: "Услуга: разработка сайтов под ключ — от 990 BYN", href: "/uslugi/razrabotka-saitov" },
+      { label: "Услуга: сайт на CMS — WordPress или Drupal", href: "/uslugi/razrabotka-sajtov-na-cms" },
+      { label: "Услуга: заказать сайт — цена и сроки", href: "/uslugi/zakazat-sajt" },
       { label: "Статья: сколько стоит сайт-визитка — разбор цен", href: "/blog/skolko-stoit-sajt-vizitka" },
       { label: "Статья: как ускорить загрузку сайта", href: "/blog/kak-uskorit-sajt" },
     ],
