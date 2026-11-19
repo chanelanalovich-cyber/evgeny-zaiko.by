@@ -928,8 +928,11 @@ body {
     text-align: left;
   }
 
+  /* Отступ держим на секциях и на <main> внутренних страниц, где он задан
+     инлайном (padding: 140px 32px …). Главную не трогаем: hero должен идти
+     от края до края, иначе по бокам видна чёрная подложка вместо воды. */
   section,
-  main {
+  main[style] {
     padding-left: 20px !important;
     padding-right: 20px !important;
   }
