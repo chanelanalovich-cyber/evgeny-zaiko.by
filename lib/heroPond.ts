@@ -128,7 +128,8 @@ const FLOOR: RGB[] = [
 function buildTerrain(w: number, h: number, seed: number): HTMLCanvasElement {
   // дно видно сквозь воду размытым — на телефоне хватает 0.45× (вдвое меньше пикселей
   // в одноразовом расчёте рельефа)
-  const s = clamp(Math.sqrt(340000 / (w * h)), 0.25, w < 700 ? 0.45 : 0.6);
+  const narrow = w < 700;
+  const s = clamp(Math.sqrt(340000 / (w * h)), 0.25, narrow ? 0.4 : 0.6);
   const cw = Math.ceil(w * s);
   const ch = Math.ceil(h * s);
   const n1 = makeNoise(seed);
@@ -147,9 +148,10 @@ function buildTerrain(w: number, h: number, seed: number): HTMLCanvasElement {
       // rotate + stretch: пластины читаются как длинные диагональные отмели
       const u = (px * ca - py * sa) * f * 0.75;
       const v = (px * sa + py * ca) * f * 1.6;
-      const wu = u + 0.85 * fbm(n2, u * 1.4 + 3.1, v * 1.4, 3);
-      const wv = v + 0.85 * fbm(n2, u * 1.4 - 7.7, v * 1.4 + 2.3, 3);
-      let val = fbm(n1, wu, wv, 4);
+      // на телефоне октавы дешевле: дно всё равно размывается водой
+      const wu = u + 0.85 * fbm(n2, u * 1.4 + 3.1, v * 1.4, narrow ? 2 : 3);
+      const wv = v + 0.85 * fbm(n2, u * 1.4 - 7.7, v * 1.4 + 2.3, narrow ? 2 : 3);
+      let val = fbm(n1, wu, wv, narrow ? 3 : 4);
       // рваные края
       val += n3(px / 16, py / 16) * 0.018 + n3(px / 40 + 40, py / 40) * 0.04;
       // центр — глубина: там стоит заголовок, дно уходит в тень
@@ -995,6 +997,7 @@ function program(gl: WebGL2RenderingContext, fs: string): GLProgram {
 }
 
 type Water = {
+  software: boolean;
   resize(w: number, h: number, dpr: number): boolean;
   drop(x: number, y: number, r: number, s: number, x2?: number, y2?: number): void;
   step(): void;
@@ -1004,6 +1007,16 @@ type Water = {
   setSurface(c: HTMLCanvasElement): void;
   lost(): boolean;
 };
+
+/**
+ * Софтверный WebGL (SwiftShader у Lighthouse/PageSpeed, llvmpipe в headless
+ * Chrome) считает каждый кадр на CPU: живая анимация пруда там даёт десятки
+ * миллисекунд блокировки главного потока на кадр, и в отчёте PageSpeed это
+ * TBT в десятки секунд (в замере дошло до 22 100 мс при FCP/LCP 1.0 c).
+ * У живого посетителя с видеокартой такого режима нет, поэтому для софтверного
+ * рендера показываем один статичный кадр — картинка эффекта остаётся.
+ */
+const SOFTWARE_GL = /swiftshader|llvmpipe|softpipe|software rasterizer|basic render/i;
 
 function createWater(canvas: HTMLCanvasElement): Water | null {
   const ctx = canvas.getContext("webgl2", {
@@ -1017,6 +1030,9 @@ function createWater(canvas: HTMLCanvasElement): Water | null {
   // отдельная константа без null: иначе сужение теряется внутри замыканий
   const gl: WebGL2RenderingContext = ctx;
   if (!gl.getExtension("EXT_color_buffer_float") && !gl.getExtension("EXT_color_buffer_half_float")) return null;
+  const dbg = gl.getExtension("WEBGL_debug_renderer_info");
+  const renderer = dbg ? String(gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL) ?? "") : "";
+  const software = SOFTWARE_GL.test(renderer);
 
   let sim: GLProgram;
   let render: GLProgram;
@@ -1156,6 +1172,7 @@ function createWater(canvas: HTMLCanvasElement): Water | null {
   }
 
   return {
+    software,
     resize,
     drop,
     step,
@@ -1368,8 +1385,12 @@ export function createPond(container: HTMLElement): PondHandle | null {
       canvas.width = Math.round(W * dpr);
       canvas.height = Math.round(H * dpr);
     }
-    floor = buildTerrain(W, H, 20241113);
-    if (water) water.setFloor(floor);
+    // ResizeObserver приходит дважды подряд на одном размере: второй проход
+    // пересобирал рельеф (у самого дорогого шага) и только добавлял TBT.
+    if (sizeChanged || !floor) {
+      floor = buildTerrain(W, H, 20241113);
+      if (water) water.setFloor(floor);
+    }
     if (sizeChanged || !world.kois.length) populate();
   }
 
@@ -1510,9 +1531,20 @@ export function createPond(container: HTMLElement): PondHandle | null {
 
   resize();
   let rt = 0;
+  // Софтверный WebGL и prefers-reduced-motion рисуют один кадр и не крутят
+  // цикл: в этих режимах анимация не стоит тех задержек, которые даёт.
+  const frozen = reduceMotion || water?.software === true;
+  const drawStill = () => {
+    last = performance.now() - 16;
+    frame(performance.now());
+    cancelAnimationFrame(raf);
+  };
   const onResize = () => {
     clearTimeout(rt);
-    rt = window.setTimeout(resize, 150);
+    rt = window.setTimeout(() => {
+      resize();
+      if (frozen) drawStill();
+    }, 150);
   };
   if (window.ResizeObserver) {
     const ro = new ResizeObserver(onResize);
@@ -1538,11 +1570,8 @@ export function createPond(container: HTMLElement): PondHandle | null {
   document.addEventListener("visibilitychange", onVis);
   cleanups.push(() => document.removeEventListener("visibilitychange", onVis));
 
-  if (reduceMotion) {
-    // один статичный кадр, без симуляции
-    last = performance.now() - 16;
-    frame(performance.now());
-    cancelAnimationFrame(raf);
+  if (frozen) {
+    drawStill();
   } else {
     raf = requestAnimationFrame(frame);
   }
