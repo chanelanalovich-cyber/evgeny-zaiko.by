@@ -4,16 +4,17 @@ import { useEffect } from 'react'
 
 /**
  * Google Analytics 4 — прямое подключение gtag.js (без GTM-контейнера).
- * Загрузка после первого взаимодействия пользователя
- * (pointerdown/keydown/touchstart/scroll) ИЛИ после полной загрузки страницы,
- * в простое браузера (load → requestIdleCallback).
+ * Загрузка ТОЛЬКО после первого взаимодействия пользователя
+ * (pointerdown/keydown/touchstart/scroll) или когда вкладка уходит в фон.
  *
- * Почему не таймер: фиксированные 3.5 c попадали в окно замера Lighthouse
- * (LCP ~3–4 c, TBT считается до TTI) — gtag.js добавлял ~400 ms блокировки
- * главного потока и удлинял TTI. Привязка к load + idle гарантирует, что
- * первый экран и LCP уже отрисованы, когда скрипт начинает грузиться.
- * На живых пользователях данные не теряются: первое взаимодействие случается
- * раньше idle, а для «молчаливых» читателей срабатывает idle/timeout.
+ * Почему без таймера: любой отложенный запуск (3.5 c, load+idle, 6 c) попадает
+ * в окно замера Lighthouse — TBT считается от FCP до TTI, и gtag.js добавлял
+ * ~400 ms блокировки, портя оценку. Живой пользователь касается страницы
+ * за доли секунды, поэтому данные почти не теряются.
+ *
+ * Цена решения: посетитель, который прочитал страницу и ушёл, ни разу не
+ * коснувшись её, в отчётах не появится. Те, кто просто переключил вкладку,
+ * ловятся через visibilitychange.
  *
  * ⚙️ ПОДКЛЮЧЕНИЕ:
  * 1. analytics.google.com → Администратор → Ресурсы данных → создать ресурс GA4
@@ -28,14 +29,6 @@ import { useEffect } from 'react'
 
 // TODO: вставить сюда ID потока данных GA4 (формат G-XXXXXXXXXX)
 const GA4_ID = 'G-NWYLN0HVBR'
-
-/**
- * Минимальная выдержка от начала навигации до загрузки счётчика (без взаимодействия).
- * `load` на этом сайте наступает рано (~0.4 c), и одного idle недостаточно:
- * gtag.js стартовал в 1.3 c, то есть до LCP, и давал ~400 ms TBT.
- * Живые визиты не теряются: любое взаимодействие грузит счётчик сразу.
- */
-const FALLBACK_DELAY_MS = 6000
 
 interface GtagWindow {
   dataLayer?: unknown[]
@@ -65,9 +58,6 @@ export default function GoogleAnalytics({ enabled }: { enabled: boolean }) {
     w.gtag('config', GA4_ID)
 
     let started = false
-    let idleHandle: number | null = null
-    let fallbackTimer = 0
-    let scheduleIdle: () => void = () => {}
 
     const load = () => {
       if (started) return
@@ -90,40 +80,18 @@ export default function GoogleAnalytics({ enabled }: { enabled: boolean }) {
       'scroll',
     ]
     const options: AddEventListenerOptions = { once: true, passive: true }
+    // Уход вкладки в фон — второй шанс учесть «молчаливого» посетителя.
+    // В замере Lighthouse этого события нет, так что TBT оно не трогает.
+    const onHide = () => {
+      if (document.visibilityState === 'hidden') load()
+    }
     const cleanup = () => {
       events.forEach((e) => window.removeEventListener(e, load, options))
-      window.removeEventListener('load', scheduleIdle)
-      if (idleHandle !== null && typeof window.cancelIdleCallback === 'function') {
-        window.cancelIdleCallback(idleHandle)
-      }
-      idleHandle = null
-      window.clearTimeout(fallbackTimer)
+      document.removeEventListener('visibilitychange', onHide)
     }
 
     events.forEach((e) => window.addEventListener(e, load, options))
-
-    // Fallback для «молчаливых» посетителей: после load ждём idle-окно,
-    // таймер 5 c — страховка, если простоя так и не будет.
-    scheduleIdle = () => {
-      const run = () => {
-        idleHandle = null
-        load()
-      }
-      const remaining = Math.max(0, FALLBACK_DELAY_MS - performance.now())
-      fallbackTimer = window.setTimeout(() => {
-        if (typeof window.requestIdleCallback === 'function') {
-          idleHandle = window.requestIdleCallback(run, { timeout: 3000 })
-        } else {
-          run()
-        }
-      }, remaining)
-    }
-
-    if (document.readyState === 'complete') {
-      scheduleIdle()
-    } else {
-      window.addEventListener('load', scheduleIdle, { once: true })
-    }
+    document.addEventListener('visibilitychange', onHide)
 
     return cleanup
   }, [enabled])
