@@ -1,7 +1,9 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import { scrollToSection } from "@/lib/useInView";
 import { Counter } from "./ui";
+import type { PondHandle } from "@/lib/heroPond";
 
 // Реальные цифры из GSC — главный аргумент для клиента
 const stats = [
@@ -22,118 +24,107 @@ const tickerItems = [
   "Техподдержка",
 ];
 
+/**
+ * Строка заголовка разбита на слова и буквы: каждая буква получает
+ * собственный inline-block, чтобы курсор мог её качнуть (lib/heroTitle.ts).
+ * Текст остаётся текстом в DOM — H1 по-прежнему один и читается как фраза.
+ */
+function LiquidLine({ text, lime = false }: { text: string; lime?: boolean }) {
+  const words = text.split(" ");
+  return (
+    <span className={lime ? "hero__line hero__line--lime" : "hero__line"}>
+      {words.map((word, wi) => (
+        <span key={`${word}-${wi}`}>
+          {wi > 0 ? " " : null}
+          <span className="hero__word">
+            {Array.from(word).map((ch, ci) => (
+              <span className="hero__ch" key={ci}>
+                {ch}
+              </span>
+            ))}
+          </span>
+        </span>
+      ))}
+    </span>
+  );
+}
+
 export default function HeroSection() {
+  const hostRef = useRef<HTMLDivElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const pondRef = useRef<PondHandle | null>(null);
+
+  useEffect(() => {
+    const host = hostRef.current;
+    const title = titleRef.current;
+    if (!host || !title) return;
+
+    let cancelled = false;
+    let handle: PondHandle | null = null;
+    let detach: (() => void) | null = null;
+    let idleId: number | null = null;
+    let timeoutId: number | null = null;
+
+    const boot = async () => {
+      if (cancelled) return;
+      // движок и буквы грузим отдельными чанками: первый экран не ждёт WebGL
+      const [{ createPond }, { attachLiquidTitle }] = await Promise.all([
+        import("@/lib/heroPond"),
+        import("@/lib/heroTitle"),
+      ]);
+      if (cancelled || !host.isConnected) return;
+      handle = createPond(host);
+      pondRef.current = handle;
+      detach = attachLiquidTitle(title, () => pondRef.current);
+    };
+
+    // Safari без requestIdleCallback просто стартует чуть раньше
+    const idle = typeof window.requestIdleCallback === "function" ? window.requestIdleCallback : null;
+    if (idle) {
+      idleId = idle(boot, { timeout: 2000 });
+    } else {
+      timeoutId = window.setTimeout(boot, 400);
+    }
+
+    return () => {
+      cancelled = true;
+      if (idleId !== null) window.cancelIdleCallback(idleId);
+      if (timeoutId !== null) window.clearTimeout(timeoutId);
+      detach?.();
+      handle?.destroy();
+      pondRef.current = null;
+    };
+  }, []);
+
   return (
     <>
-      {/* HERO */}
-      <section
-        id="hero"
-        className="hero"
-        style={{
-          minHeight: "100vh",
-          display: "flex",
-          flexDirection: "column",
-          // Контент по центру экрана: с flex-end блок уезжал к низу и его
-          // центр оказывался заметно ниже середины вьюпорта
-          justifyContent: "center",
-          padding: "0 32px 80px",
-          position: "relative",
-          overflow: "hidden",
-        }}
-      >
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            zIndex: 0,
-            backgroundImage:
-              "linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px)",
-            backgroundSize: "80px 80px",
-          }}
-        />
-        <div
-          style={{
-            position: "absolute",
-            top: "8%",
-            right: "-8%",
-            width: 700,
-            height: 700,
-            zIndex: 0,
-            borderRadius: "50%",
-            background: "radial-gradient(circle, rgba(200,255,0,0.055) 0%, transparent 65%)",
-            pointerEvents: "none",
-          }}
-        />
-        <div
-          style={{
-            position: "absolute",
-            bottom: "10%",
-            left: "-5%",
-            width: 500,
-            height: 500,
-            zIndex: 0,
-            borderRadius: "50%",
-            background: "radial-gradient(circle, rgba(200,255,0,0.025) 0%, transparent 65%)",
-            pointerEvents: "none",
-          }}
-        />
+      <section id="hero" className="hero">
+        <div ref={hostRef} className="hero__pond" aria-hidden="true" />
+        <div className="hero__scrim" aria-hidden="true" />
 
-        <div className="hero-inner" style={{ position: "relative", zIndex: 1, maxWidth: 1200, width: "100%", margin: "0 auto" }}>
-          <div className="section-label fade-up" style={{ marginBottom: 24, animationDelay: "0.1s" }}>
+        <div className="hero__stage">
+          <p className="hero__kicker section-label">
             Евгений Зайко · сайты для малого бизнеса
             <span className="hero-label-extra">
               {" · "}Беларусь и русскоязычный бизнес за границей · {new Date().getFullYear()}
             </span>
-          </div>
+          </p>
 
           <h1
-            className="fade-up"
-            style={{
-              fontFamily: "var(--font-display)",
-              fontWeight: 700,
-              fontSize: "clamp(2.6rem,6.5vw,5.5rem)",
-              lineHeight: 1.02,
-              letterSpacing: "-0.01em",
-              color: "var(--text)",
-              margin: 0,
-              animationDelay: "0.2s",
-              maxWidth: 1050,
-            }}
+            ref={titleRef}
+            className="hero__title"
+            aria-label="Сайт с заявками под ключ — за 5–7 дней"
           >
-            Сайт с заявками{" "}
-            <span style={{ color: "var(--accent)" }}>под ключ</span> — за 5–7 дней
+            <LiquidLine text="САЙТ С ЗАЯВКАМИ" />{" "}
+            <LiquidLine text="ПОД КЛЮЧ" lime />
           </h1>
 
-          <div
-            className="line-draw"
-            style={{ height: 1, background: "var(--border)", margin: "36px 0", maxWidth: 900 }}
-          />
-
-          <div
-            className="fade-up"
-            style={{
-              display: "flex",
-              flexWrap: "wrap",
-              gap: 40,
-              alignItems: "flex-end",
-              animationDelay: "0.45s",
-            }}
-          >
-            <p
-              style={{
-                fontFamily: "var(--font-body)",
-                fontSize: "1.1rem",
-                lineHeight: 1.68,
-                color: "var(--muted)",
-                maxWidth: 560,
-                margin: 0,
-              }}
-            >
-              Делаю сайты для малого бизнеса, которые приносят заявки с первого дня запуска. Один
-              исполнитель отвечает за весь результат: дизайн, код, скорость, заявки в Telegram.
-              Без менеджеров, подписок и посредников.
+          <div className="hero__meta">
+            <p className="hero__lead">
+              За 5–7 дней: дизайн, код, скорость и заявки в Telegram. Один исполнитель отвечает за
+              весь результат — без подписок, менеджеров и посредников.
             </p>
-            <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+            <div className="hero__actions">
               <button className="btn-primary" onClick={() => scrollToSection("contact")}>
                 Обсудить проект →
               </button>
@@ -142,99 +133,33 @@ export default function HeroSection() {
               </button>
             </div>
           </div>
+        </div>
 
-          <div
-            className="fade-up"
-            style={{ display: "flex", gap: 56, marginTop: 72, flexWrap: "wrap" }}
-          >
+        <div className="hero__foot">
+          <div className="hero__stats">
             {stats.map(({ n, s, label }) => (
-              <div key={label}>
-                <div
-                  style={{
-                    fontFamily: "var(--font-display)",
-                    fontWeight: 700,
-                    fontSize: "clamp(2rem,5vw,3.5rem)",
-                    textTransform: "uppercase",
-                    color: "var(--accent)",
-                  }}
-                >
+              <div className="hero__stat" key={label}>
+                <div className="hero__stat-num">
                   <Counter target={n} suffix={s} />
                 </div>
-                <div
-                  style={{
-                    fontFamily: "var(--font-mono)",
-                    fontSize: "0.68rem",
-                    color: "var(--muted)",
-                    letterSpacing: "0.1em",
-                    marginTop: 4,
-                    maxWidth: 160,
-                  }}
-                >
-                  {label}
-                </div>
+                <div className="hero__stat-label">{label}</div>
               </div>
             ))}
           </div>
-        </div>
 
-        <div
-          className="scroll-hint"
-          style={{
-            position: "absolute",
-            bottom: 32,
-            right: 32,
-            zIndex: 1,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            gap: 8,
-          }}
-        >
-          <div
-            style={{
-              fontFamily: "var(--font-mono)",
-              fontSize: "0.58rem",
-              letterSpacing: "0.2em",
-              color: "var(--muted)",
-              writingMode: "vertical-rl",
-            }}
-          >
-            ПРОКРУТИТЬ
+          <div className="scroll-hint">
+            <div className="scroll-hint-text">ПРОКРУТИТЬ</div>
+            <div className="scroll-hint-line" />
           </div>
-          <div
-            style={{
-              width: 1,
-              height: 60,
-              background: "linear-gradient(to bottom, var(--muted), transparent)",
-            }}
-          />
         </div>
       </section>
 
       {/* TICKER */}
-      <div
-        style={{
-          borderTop: "1px solid var(--border)",
-          borderBottom: "1px solid var(--border)",
-          padding: "14px 0",
-          overflow: "hidden",
-        }}
-      >
-        <div className="ticker-inner" style={{ display: "flex", width: "max-content" }}>
+      <div className="ticker">
+        <div className="ticker-inner">
           {[...tickerItems, ...tickerItems, ...tickerItems].map((t, i) => (
-            <span
-              key={i}
-              style={{
-                fontFamily: "var(--font-mono)",
-                fontSize: "0.68rem",
-                letterSpacing: "0.15em",
-                textTransform: "uppercase",
-                color: "var(--muted)",
-                padding: "0 28px",
-                whiteSpace: "nowrap",
-              }}
-            >
-              {t} <span style={{ color: "var(--accent)", marginLeft: 28 }}>✦</span>
+            <span className="ticker-item" key={i}>
+              {t} <span className="ticker-star">✦</span>
             </span>
           ))}
         </div>
